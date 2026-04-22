@@ -77,7 +77,12 @@ export default function ComplianceReport() {
 
   const exportPdf = () => {
     showToast('Opening print dialog — choose "Save as PDF" in your browser')
-    setTimeout(() => window.print(), 400)
+    const originalTitle = document.title
+    document.title = 'CloakPayroll — Confidential Payroll on Solana'
+    setTimeout(() => {
+      window.print()
+      document.title = originalTitle
+    }, 400)
   }
 
   const copyViewingKey = async () => {
@@ -577,6 +582,10 @@ export default function ComplianceReport() {
 
       <style>{`
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        @page {
+          margin-top: 0.5cm;
+        }
 
         @media print {
           /* Hide everything except the report panel */
