@@ -76,7 +76,7 @@ export default function AddEmployees() {
   if (!connected) {
     return (
       <div style={{ textAlign: 'center', padding: '80px 24px' }}>
-        <Shield size={40} color="#8b5cf6" style={{ margin: '0 auto 20px' }} />
+        <Shield size={40} color="#F97316" style={{ margin: '0 auto 20px' }} />
         <h2 style={{ fontSize: 24, fontWeight: 700, marginBottom: 12, color: c.heading }}>Connect Wallet</h2>
         <p style={{ color: c.muted, marginBottom: 28 }}>Connect your employer wallet to manage employees.</p>
         <WalletMultiButton />
@@ -97,10 +97,10 @@ export default function AddEmployees() {
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 24 }}>
             <div style={{
               width: 36, height: 36, borderRadius: 9,
-              background: 'rgba(139,92,246,0.15)',
+              background: 'rgba(249,115,22,0.15)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
             }}>
-              <UserPlus size={18} color="#a78bfa" />
+              <UserPlus size={18} color="#FB923C" />
             </div>
             <h2 style={{ fontSize: 16, fontWeight: 700, color: c.heading }}>Add Employee</h2>
           </div>
@@ -220,7 +220,7 @@ export default function AddEmployees() {
             )}
 
             <button type="submit" style={{
-              background: 'linear-gradient(135deg, #7c3aed, #06b6d4)',
+              background: 'linear-gradient(135deg, #F97316, #EF4444)',
               color: 'white', border: 'none', borderRadius: 10,
               padding: '12px', cursor: 'pointer',
               fontSize: 15, fontWeight: 700, fontFamily: 'inherit',
@@ -236,7 +236,7 @@ export default function AddEmployees() {
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
             <h2 style={{ fontSize: 16, fontWeight: 700, color: c.heading }}>
               Employees <span style={{
-                fontSize: 12, color: '#8b5cf6', backgroundColor: 'rgba(139,92,246,0.15)',
+                fontSize: 12, color: '#F97316', backgroundColor: 'rgba(249,115,22,0.15)',
                 padding: '2px 8px', borderRadius: 100, marginLeft: 8, fontWeight: 600,
               }}>{employees.length}</span>
             </h2>
@@ -263,9 +263,9 @@ export default function AddEmployees() {
                   <div style={{ display: 'flex', alignItems: 'center', gap: 14, flex: 1, minWidth: 0 }}>
                     <div style={{
                       width: 40, height: 40, borderRadius: 11, flexShrink: 0,
-                      background: 'linear-gradient(135deg, #7c3aed33, #06b6d433)',
+                      background: 'linear-gradient(135deg, #EA580C33, #EF444433)',
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      fontSize: 15, fontWeight: 800, color: '#a78bfa',
+                      fontSize: 15, fontWeight: 800, color: '#FB923C',
                     }}>
                       {emp.name.charAt(0)}
                     </div>

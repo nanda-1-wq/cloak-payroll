@@ -108,7 +108,7 @@ export default function RunPayroll() {
   if (!connected) {
     return (
       <div style={{ textAlign: 'center', padding: '80px 24px' }}>
-        <Shield size={40} color="#8b5cf6" style={{ margin: '0 auto 20px' }} />
+        <Shield size={40} color="#F97316" style={{ margin: '0 auto 20px' }} />
         <h2 style={{ fontSize: 24, fontWeight: 700, marginBottom: 12, color: c.heading }}>Connect Wallet</h2>
         <p style={{ color: c.muted, marginBottom: 28 }}>Connect your employer wallet to run payroll.</p>
         <WalletMultiButton />
@@ -146,13 +146,13 @@ export default function RunPayroll() {
         <>
           {/* Privacy notice */}
           <div style={{
-            backgroundColor: 'rgba(139,92,246,0.08)',
-            border: '1px solid rgba(139,92,246,0.25)',
+            backgroundColor: 'rgba(249,115,22,0.08)',
+            border: '1px solid rgba(249,115,22,0.25)',
             borderRadius: 12, padding: '14px 18px',
             display: 'flex', gap: 12, alignItems: 'flex-start', marginBottom: 20,
           }}>
-            <Lock size={16} color="#a78bfa" style={{ flexShrink: 0, marginTop: 1 }} />
-            <div style={{ fontSize: 13, color: '#c4b5fd' }}>
+            <Lock size={16} color="#FB923C" style={{ flexShrink: 0, marginTop: 1 }} />
+            <div style={{ fontSize: 13, color: '#FDBA74' }}>
               <strong>Privacy guaranteed:</strong> Salary amounts are encrypted using ZK proofs. Recipient
               addresses are one-time stealth addresses. No one on-chain can see who received what amount.
             </div>
@@ -163,8 +163,8 @@ export default function RunPayroll() {
             <h3 style={{ fontSize: 15, fontWeight: 700, marginBottom: 16, color: c.muted }}>Payroll Summary</h3>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16, marginBottom: 20 }}>
               {[
-                { icon: Users, label: 'Employees', value: employees.length.toString(), color: '#8b5cf6' },
-                { icon: DollarSign, label: 'Total Amount', value: `$${totalPayroll.toLocaleString()}`, color: '#06b6d4' },
+                { icon: Users, label: 'Employees', value: employees.length.toString(), color: '#F97316' },
+                { icon: DollarSign, label: 'Total Amount', value: `$${totalPayroll.toLocaleString()}`, color: '#EF4444' },
                 { icon: Zap, label: 'Pay Date', value: today, color: '#10b981' },
               ].map(s => (
                 <div key={s.label} style={{
@@ -193,7 +193,7 @@ export default function RunPayroll() {
             {employees.length === 0 ? (
               <div style={{ textAlign: 'center', padding: '24px 0', color: c.faint }}>
                 <p>No employees added yet.</p>
-                <Link to="/employees" style={{ color: '#8b5cf6', fontSize: 14, fontWeight: 600 }}>Add employees</Link>
+                <Link to="/employees" style={{ color: '#F97316', fontSize: 14, fontWeight: 600 }}>Add employees</Link>
               </div>
             ) : (
               <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
@@ -207,9 +207,9 @@ export default function RunPayroll() {
                     <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                       <div style={{
                         width: 36, height: 36, borderRadius: 9,
-                        background: 'linear-gradient(135deg, #7c3aed33, #06b6d433)',
+                        background: 'linear-gradient(135deg, #EA580C33, #EF444433)',
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        fontSize: 14, fontWeight: 700, color: '#a78bfa',
+                        fontSize: 14, fontWeight: 700, color: '#FB923C',
                       }}>
                         {emp.name.charAt(0)}
                       </div>
@@ -250,7 +250,7 @@ export default function RunPayroll() {
             <Info size={15} color={c.muted} />
             <div style={{ fontSize: 13, color: c.muted }}>
               Paying from:{' '}
-              <span style={{ color: '#a78bfa', fontFamily: 'monospace' }}>
+              <span style={{ color: '#FB923C', fontFamily: 'monospace' }}>
                 {publicKey?.toString().slice(0, 8)}...{publicKey?.toString().slice(-4)}
               </span>
             </div>
@@ -263,13 +263,13 @@ export default function RunPayroll() {
               width: '100%',
               background: employees.length === 0
                 ? (isDark ? '#1e1e3a' : '#e2e8f0')
-                : 'linear-gradient(135deg, #7c3aed, #06b6d4)',
+                : 'linear-gradient(135deg, #F97316, #EF4444)',
               color: employees.length === 0 ? c.faint : 'white',
               border: 'none', borderRadius: 12,
               padding: '16px', cursor: employees.length === 0 ? 'not-allowed' : 'pointer',
               fontSize: 16, fontWeight: 700, fontFamily: 'inherit',
               display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
-              boxShadow: employees.length > 0 ? '0 0 40px rgba(124,58,237,0.3)' : 'none',
+              boxShadow: employees.length > 0 ? '0 0 40px rgba(249,115,22,0.3)' : 'none',
             }}
           >
             <Play size={18} />
@@ -286,18 +286,18 @@ export default function RunPayroll() {
         }}>
           <div style={{
             width: 72, height: 72, borderRadius: 20,
-            background: 'rgba(139,92,246,0.15)', border: '1px solid rgba(139,92,246,0.3)',
+            background: 'rgba(249,115,22,0.15)', border: '1px solid rgba(249,115,22,0.3)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             margin: '0 auto 24px',
           }}>
-            <UserPlus size={32} color="#a78bfa" />
+            <UserPlus size={32} color="#FB923C" />
           </div>
           <h2 style={{ fontSize: 22, fontWeight: 700, marginBottom: 8, color: c.heading }}>Setting Up Cloak</h2>
           <p style={{ color: c.muted, fontSize: 15 }}>
             Registering your wallet with the Cloak privacy protocol.
             Approve the signing prompt in Phantom.
           </p>
-          <div style={{ marginTop: 20, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, color: '#a78bfa' }}>
+          <div style={{ marginTop: 20, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, color: '#FB923C' }}>
             <Loader2 size={18} style={{ animation: 'spin 1s linear infinite' }} />
             <span style={{ fontSize: 14 }}>Generating ZK registration proof...</span>
           </div>
@@ -312,17 +312,17 @@ export default function RunPayroll() {
         }}>
           <div style={{
             width: 72, height: 72, borderRadius: 20,
-            background: 'rgba(6,182,212,0.12)', border: '1px solid rgba(6,182,212,0.25)',
+            background: 'rgba(239,68,68,0.12)', border: '1px solid rgba(239,68,68,0.25)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             margin: '0 auto 24px',
           }}>
-            <Users size={32} color="#06b6d4" />
+            <Users size={32} color="#EF4444" />
           </div>
           <h2 style={{ fontSize: 22, fontWeight: 700, marginBottom: 8, color: c.heading }}>Verifying Recipients</h2>
           <p style={{ color: c.muted, fontSize: 15 }}>
             Checking that all employees have registered with Cloak...
           </p>
-          <div style={{ marginTop: 20, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, color: '#06b6d4' }}>
+          <div style={{ marginTop: 20, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, color: '#EF4444' }}>
             <Loader2 size={18} style={{ animation: 'spin 1s linear infinite' }} />
             <span style={{ fontSize: 14 }}>Querying on-chain accounts...</span>
           </div>
@@ -358,15 +358,15 @@ export default function RunPayroll() {
           <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 24 }}>
             <div style={{
               width: 52, height: 52, borderRadius: 14, flexShrink: 0,
-              background: 'rgba(6,182,212,0.15)', border: '1px solid rgba(6,182,212,0.3)',
+              background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.3)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
             }}>
-              <Loader2 size={24} color="#06b6d4" style={{ animation: 'spin 1s linear infinite' }} />
+              <Loader2 size={24} color="#EF4444" style={{ animation: 'spin 1s linear infinite' }} />
             </div>
             <div>
               <h2 style={{ fontSize: 18, fontWeight: 700, color: c.heading, marginBottom: 4 }}>Processing Payroll</h2>
               {currentEmpIndex >= 0 && (
-                <p style={{ fontSize: 13, color: '#06b6d4', margin: 0 }}>
+                <p style={{ fontSize: 13, color: '#EF4444', margin: 0 }}>
                   Processing {employees[currentEmpIndex]?.name} ({currentEmpIndex + 1}/{employees.length})...
                 </p>
               )}
@@ -383,7 +383,7 @@ export default function RunPayroll() {
               <div style={{
                 height: '100%',
                 width: `${progress}%`,
-                background: 'linear-gradient(90deg, #7c3aed, #06b6d4)',
+                background: 'linear-gradient(90deg, #F97316, #EF4444)',
                 borderRadius: 100, transition: 'width 0.5s ease',
               }} />
             </div>
@@ -402,9 +402,9 @@ export default function RunPayroll() {
                   backgroundColor: isPaid
                     ? 'rgba(16,185,129,0.07)'
                     : isActive
-                      ? 'rgba(6,182,212,0.07)'
+                      ? 'rgba(239,68,68,0.07)'
                       : c.rowBg,
-                  border: `1px solid ${isPaid ? 'rgba(16,185,129,0.25)' : isActive ? 'rgba(6,182,212,0.25)' : c.border}`,
+                  border: `1px solid ${isPaid ? 'rgba(16,185,129,0.25)' : isActive ? 'rgba(239,68,68,0.25)' : c.border}`,
                   borderRadius: 10,
                   opacity: isPending ? 0.5 : 1,
                   transition: 'all 0.3s ease',
@@ -412,9 +412,9 @@ export default function RunPayroll() {
                   <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                     <div style={{
                       width: 30, height: 30, borderRadius: 8, flexShrink: 0,
-                      background: 'linear-gradient(135deg, #7c3aed33, #06b6d433)',
+                      background: 'linear-gradient(135deg, #EA580C33, #EF444433)',
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      fontSize: 12, fontWeight: 700, color: '#a78bfa',
+                      fontSize: 12, fontWeight: 700, color: '#FB923C',
                     }}>
                       {emp.name.charAt(0)}
                     </div>
@@ -428,7 +428,7 @@ export default function RunPayroll() {
                       ${emp.salary.toLocaleString()}
                     </span>
                     {isPaid && <CheckCircle size={16} color="#10b981" />}
-                    {isActive && <Loader2 size={16} color="#06b6d4" style={{ animation: 'spin 1s linear infinite' }} />}
+                    {isActive && <Loader2 size={16} color="#EF4444" style={{ animation: 'spin 1s linear infinite' }} />}
                     {isPending && (
                       <div style={{ width: 16, height: 16, borderRadius: '50%', border: `2px solid ${c.border}` }} />
                     )}
@@ -502,7 +502,7 @@ export default function RunPayroll() {
               </a>
             )}
             <button onClick={reset} style={{
-              background: 'linear-gradient(135deg, #7c3aed, #06b6d4)',
+              background: 'linear-gradient(135deg, #F97316, #EF4444)',
               color: 'white', border: 'none', borderRadius: 10,
               padding: '10px 20px', cursor: 'pointer',
               fontSize: 14, fontWeight: 700, fontFamily: 'inherit',
@@ -560,7 +560,7 @@ export default function RunPayroll() {
             </p>
           )}
           <button onClick={reset} style={{
-            background: 'linear-gradient(135deg, #7c3aed, #06b6d4)',
+            background: 'linear-gradient(135deg, #F97316, #EF4444)',
             color: 'white', border: 'none', borderRadius: 10,
             padding: '12px 28px', cursor: 'pointer',
             fontSize: 15, fontWeight: 700, fontFamily: 'inherit',

@@ -98,7 +98,7 @@ export default function ComplianceReport() {
   if (!connected) {
     return (
       <div style={{ textAlign: 'center', padding: '80px 24px' }}>
-        <Shield size={40} color="#8b5cf6" style={{ margin: '0 auto 20px' }} />
+        <Shield size={40} color="#F97316" style={{ margin: '0 auto 20px' }} />
         <h2 style={{ fontSize: 24, fontWeight: 700, marginBottom: 12, color: c.heading }}>Connect Wallet</h2>
         <p style={{ color: c.muted, marginBottom: 28 }}>Connect your employer wallet to generate compliance reports.</p>
         <WalletMultiButton />
@@ -118,15 +118,15 @@ export default function ComplianceReport() {
       {toastMsg && (
         <div style={{
           position: 'fixed', bottom: 28, left: '50%', transform: 'translateX(-50%)',
-          backgroundColor: isDark ? '#1e1b4b' : '#312e81',
-          border: '1px solid rgba(139,92,246,0.4)',
+          backgroundColor: isDark ? '#431407' : '#7C2D12',
+          border: '1px solid rgba(249,115,22,0.4)',
           borderRadius: 12, padding: '12px 20px',
-          color: '#e9d5ff', fontSize: 14, fontWeight: 500,
+          color: '#fed7aa', fontSize: 14, fontWeight: 500,
           display: 'flex', alignItems: 'center', gap: 10,
           boxShadow: '0 8px 32px rgba(0,0,0,0.3)',
           zIndex: 9999, whiteSpace: 'nowrap',
         }}>
-          <CheckCircle size={16} color="#a78bfa" />
+          <CheckCircle size={16} color="#FB923C" />
           {toastMsg}
         </div>
       )}
@@ -179,10 +179,10 @@ export default function ComplianceReport() {
               onClick={copyViewingKey}
               style={{
                 width: '100%',
-                backgroundColor: vkCopied ? 'rgba(16,185,129,0.1)' : 'rgba(139,92,246,0.1)',
-                border: `1px solid ${vkCopied ? 'rgba(16,185,129,0.3)' : 'rgba(139,92,246,0.3)'}`,
+                backgroundColor: vkCopied ? 'rgba(16,185,129,0.1)' : 'rgba(249,115,22,0.1)',
+                border: `1px solid ${vkCopied ? 'rgba(16,185,129,0.3)' : 'rgba(249,115,22,0.3)'}`,
                 borderRadius: 10, padding: '10px',
-                color: vkCopied ? '#10b981' : '#a78bfa',
+                color: vkCopied ? '#10b981' : '#FB923C',
                 cursor: 'pointer',
                 fontSize: 14, fontWeight: 600, fontFamily: 'inherit',
                 display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
@@ -204,20 +204,20 @@ export default function ComplianceReport() {
 
       {/* How it works banner */}
       <div className="no-print" style={{
-        backgroundColor: 'rgba(139,92,246,0.08)',
-        border: '1px solid rgba(139,92,246,0.2)',
+        backgroundColor: 'rgba(249,115,22,0.08)',
+        border: '1px solid rgba(249,115,22,0.2)',
         borderRadius: 14, padding: '20px 24px',
         display: 'flex', gap: 16, alignItems: 'flex-start', marginBottom: 28,
       }}>
         <div style={{
           width: 40, height: 40, borderRadius: 10, flexShrink: 0,
-          backgroundColor: 'rgba(139,92,246,0.2)',
+          backgroundColor: 'rgba(249,115,22,0.2)',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
         }}>
-          <Key size={18} color="#a78bfa" />
+          <Key size={18} color="#FB923C" />
         </div>
         <div>
-          <div style={{ fontSize: 14, fontWeight: 700, color: '#c4b5fd', marginBottom: 4 }}>
+          <div style={{ fontSize: 14, fontWeight: 700, color: '#FDBA74', marginBottom: 4 }}>
             Privacy-preserving compliance using Viewing Keys
           </div>
           <div style={{ fontSize: 13, color: c.muted, lineHeight: 1.6 }}>
@@ -231,7 +231,7 @@ export default function ComplianceReport() {
         <div className="no-print" style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
           <div style={{ backgroundColor: c.cardBg, border: `1px solid ${c.border}`, borderRadius: 16, padding: 24 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 20 }}>
-              <FileText size={18} color="#a78bfa" />
+              <FileText size={18} color="#FB923C" />
               <h3 style={{ fontSize: 15, fontWeight: 700, color: c.heading }}>Generate Report</h3>
             </div>
 
@@ -256,8 +256,8 @@ export default function ComplianceReport() {
                   { label: 'Full Audit Trail', desc: 'All payments with viewing keys', checked: false },
                 ].map(opt => (
                   <div key={opt.label} style={{
-                    backgroundColor: opt.checked ? 'rgba(139,92,246,0.1)' : c.rowBg,
-                    border: `1px solid ${opt.checked ? 'rgba(139,92,246,0.3)' : c.border}`,
+                    backgroundColor: opt.checked ? 'rgba(249,115,22,0.1)' : c.rowBg,
+                    border: `1px solid ${opt.checked ? 'rgba(249,115,22,0.3)' : c.border}`,
                     borderRadius: 10, padding: '10px 12px',
                     cursor: 'pointer',
                   }}>
@@ -273,7 +273,7 @@ export default function ComplianceReport() {
               disabled={reportState === 'generating'}
               style={{
                 width: '100%',
-                background: reportState === 'generating' ? (isDark ? '#1e1e3a' : '#e2e8f0') : 'linear-gradient(135deg, #7c3aed, #06b6d4)',
+                background: reportState === 'generating' ? (isDark ? '#1e1e3a' : '#e2e8f0') : 'linear-gradient(135deg, #F97316, #EF4444)',
                 color: reportState === 'generating' ? c.faint : 'white',
                 border: 'none', borderRadius: 10,
                 padding: '12px', cursor: reportState === 'generating' ? 'not-allowed' : 'pointer',
@@ -330,10 +330,10 @@ export default function ComplianceReport() {
                   onClick={() => setShowVkModal(true)}
                   style={{
                     flex: 1,
-                    backgroundColor: 'rgba(139,92,246,0.08)',
-                    border: '1px solid rgba(139,92,246,0.25)',
+                    backgroundColor: 'rgba(249,115,22,0.08)',
+                    border: '1px solid rgba(249,115,22,0.25)',
                     borderRadius: 8, padding: '8px 6px',
-                    color: '#a78bfa', cursor: 'pointer',
+                    color: '#FB923C', cursor: 'pointer',
                     fontSize: 12, fontWeight: 600, fontFamily: 'inherit',
                     display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 5,
                   }}
@@ -355,7 +355,7 @@ export default function ComplianceReport() {
                 }}
               >
                 <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                  <Info size={12} color="#a78bfa" /> What is a Viewing Key?
+                  <Info size={12} color="#FB923C" /> What is a Viewing Key?
                 </span>
                 {vkInfoOpen ? <ChevronUp size={13} /> : <ChevronDown size={13} />}
               </button>
@@ -363,8 +363,8 @@ export default function ComplianceReport() {
               {vkInfoOpen && (
                 <div style={{
                   marginTop: 8, padding: '12px 14px',
-                  backgroundColor: 'rgba(139,92,246,0.06)',
-                  border: '1px solid rgba(139,92,246,0.2)',
+                  backgroundColor: 'rgba(249,115,22,0.06)',
+                  border: '1px solid rgba(249,115,22,0.2)',
                   borderRadius: 8, fontSize: 12, color: c.muted, lineHeight: 1.7,
                 }}>
                   A Viewing Key lets auditors verify your payroll history without accessing your wallet.
@@ -393,7 +393,7 @@ export default function ComplianceReport() {
 
           {reportState === 'generating' && (
             <div style={{ textAlign: 'center', padding: '60px 0' }}>
-              <Loader2 size={32} color="#8b5cf6" style={{ margin: '0 auto 16px', animation: 'spin 1s linear infinite' }} />
+              <Loader2 size={32} color="#F97316" style={{ margin: '0 auto 16px', animation: 'spin 1s linear infinite' }} />
               <p style={{ color: c.muted }}>Decrypting payroll records using viewing key...</p>
             </div>
           )}
@@ -450,9 +450,9 @@ export default function ComplianceReport() {
               {/* Summary stats */}
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12, marginBottom: 24 }}>
                 {[
-                  { icon: Users, label: 'Active Employees', value: employees.length.toString(), color: '#8b5cf6' },
+                  { icon: Users, label: 'Active Employees', value: employees.length.toString(), color: '#F97316' },
                   { icon: DollarSign, label: 'Total Disbursed', value: `$${ytdTotal.toLocaleString()}`, color: '#10b981' },
-                  { icon: CheckCircle, label: 'Payroll Runs', value: payrollHistory.length.toString(), color: '#06b6d4' },
+                  { icon: CheckCircle, label: 'Payroll Runs', value: payrollHistory.length.toString(), color: '#EF4444' },
                 ].map(s => (
                   <div key={s.label} style={{
                     backgroundColor: c.rowBg, borderRadius: 10, padding: '14px',
@@ -549,7 +549,7 @@ export default function ComplianceReport() {
                         <a
                           href={`https://explorer.solana.com/tx/${run.txSignature}?cluster=devnet`}
                           target="_blank" rel="noopener noreferrer"
-                          style={{ color: '#8b5cf6' }}
+                          style={{ color: '#F97316' }}
                           className="no-print"
                         >
                           <ExternalLink size={13} />

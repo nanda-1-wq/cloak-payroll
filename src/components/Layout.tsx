@@ -46,7 +46,7 @@ export default function Layout({ children }: { children: ReactNode }) {
               />
               <span style={{ fontWeight: 800, fontSize: 18, letterSpacing: '-0.5px', color: c.logoText }}>AK</span>
             </div>
-            <span style={{ fontWeight: 800, fontSize: 18, letterSpacing: '-0.5px', color: '#8b5cf6' }}>
+            <span style={{ fontWeight: 800, fontSize: 18, letterSpacing: '-0.5px', color: '#F97316' }}>
               Payroll
             </span>
           </Link>
@@ -64,8 +64,8 @@ export default function Layout({ children }: { children: ReactNode }) {
                   textDecoration: 'none',
                   fontSize: 14,
                   fontWeight: 500,
-                  color: isActive(item.to) ? '#a78bfa' : c.muted,
-                  backgroundColor: isActive(item.to) ? 'rgba(139, 92, 246, 0.12)' : 'transparent',
+                  color: isActive(item.to) ? '#FB923C' : c.muted,
+                  backgroundColor: isActive(item.to) ? 'rgba(249, 115, 22, 0.12)' : 'transparent',
                   transition: 'all 0.15s',
                 }}
               >
@@ -132,8 +132,8 @@ export default function Layout({ children }: { children: ReactNode }) {
                   borderRadius: 8,
                   textDecoration: 'none',
                   fontSize: 14, fontWeight: 500,
-                  color: isActive(item.to) ? '#a78bfa' : c.muted,
-                  backgroundColor: isActive(item.to) ? 'rgba(139, 92, 246, 0.12)' : 'transparent',
+                  color: isActive(item.to) ? '#FB923C' : c.muted,
+                  backgroundColor: isActive(item.to) ? 'rgba(249, 115, 22, 0.12)' : 'transparent',
                 }}
               >
                 <item.icon size={16} />
@@ -159,7 +159,7 @@ export default function Layout({ children }: { children: ReactNode }) {
         backgroundColor: c.navBg,
       }}>
         <span>CloakPayroll - Powered by </span>
-        <span style={{ color: '#8b5cf6' }}>Cloak SDK</span>
+        <span style={{ color: '#F97316' }}>Cloak SDK</span>
         <span> on Solana Devnet</span>
       </footer>
     </div>

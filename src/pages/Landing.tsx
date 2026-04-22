@@ -7,13 +7,13 @@ const FEATURES = [
     icon: Lock,
     title: 'Confidential Transfers',
     desc: 'Salary amounts are encrypted on-chain. Only the sender and recipient can see the values, not the public.',
-    color: '#8b5cf6',
+    color: '#F97316',
   },
   {
     icon: Shield,
     title: 'Stealth Addresses',
     desc: "Each payment uses a one-time address derived from the employee's wallet. No one can link payments together.",
-    color: '#06b6d4',
+    color: '#EF4444',
   },
   {
     icon: Eye,
@@ -60,7 +60,7 @@ export default function Landing() {
               />
               <span style={{ fontWeight: 800, fontSize: 19, letterSpacing: '-0.5px', color: c.logoText }}>AK</span>
             </div>
-            <span style={{ fontWeight: 800, fontSize: 19, letterSpacing: '-0.5px', color: '#8b5cf6' }}>
+            <span style={{ fontWeight: 800, fontSize: 19, letterSpacing: '-0.5px', color: '#F97316' }}>
               Payroll
             </span>
           </div>
@@ -200,7 +200,7 @@ export default function Landing() {
             { value: '100%', label: 'Non-custodial and trustless' },
           ].map(stat => (
             <div key={stat.label}>
-              <div style={{ fontSize: 28, fontWeight: 800, color: '#a78bfa', marginBottom: 4 }}>{stat.value}</div>
+              <div style={{ fontSize: 28, fontWeight: 800, color: '#FB923C', marginBottom: 4 }}>{stat.value}</div>
               <div style={{ fontSize: 13, color: c.muted }}>{stat.label}</div>
             </div>
           ))}
@@ -262,10 +262,10 @@ export default function Landing() {
               <div key={step.n} style={{ display: 'flex', gap: 20 }}>
                 <div style={{
                   width: 48, height: 48, borderRadius: 12, flexShrink: 0,
-                  background: 'linear-gradient(135deg, #7c3aed22, #06b6d422)',
-                  border: '1px solid #7c3aed44',
+                  background: 'linear-gradient(135deg, #EA580C22, #EF444422)',
+                  border: '1px solid #EA580C44',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  fontSize: 13, fontWeight: 800, color: '#a78bfa', letterSpacing: '0.5px',
+                  fontSize: 13, fontWeight: 800, color: '#FB923C', letterSpacing: '0.5px',
                 }}>
                   {step.n}
                 </div>

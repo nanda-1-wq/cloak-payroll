@@ -54,13 +54,13 @@ export default function Dashboard() {
       <div style={{ textAlign: 'center', padding: '80px 24px' }}>
         <div style={{
           width: 72, height: 72,
-          background: 'linear-gradient(135deg, rgba(124,58,237,0.2), rgba(6,182,212,0.1))',
-          border: '1px solid rgba(124,58,237,0.3)',
+          background: 'linear-gradient(135deg, rgba(234,88,12,0.2), rgba(239,68,68,0.1))',
+          border: '1px solid rgba(234,88,12,0.3)',
           borderRadius: 20,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           margin: '0 auto 24px',
         }}>
-          <Shield size={32} color="#a78bfa" />
+          <Shield size={32} color="#FB923C" />
         </div>
         <h2 style={{ fontSize: 28, fontWeight: 700, marginBottom: 12, letterSpacing: '-0.5px', color: c.heading }}>
           Connect your wallet
@@ -83,15 +83,16 @@ export default function Dashboard() {
               Payroll Dashboard
             </h1>
             <p style={{ color: c.muted, fontSize: 14 }}>
-              Wallet: <span style={{ color: '#a78bfa', fontFamily: 'monospace' }}>
+              Wallet: <span style={{ color: '#FB923C', fontFamily: 'monospace' }}>
                 {publicKey?.toString().slice(0, 6)}...{publicKey?.toString().slice(-4)}
               </span>
+
             </p>
           </div>
           <Link
             to="/payroll"
             style={{
-              background: 'linear-gradient(135deg, #7c3aed, #06b6d4)',
+              background: 'linear-gradient(135deg, #F97316, #EF4444)',
               color: 'white', textDecoration: 'none',
               padding: '10px 24px', borderRadius: 10,
               fontSize: 14, fontWeight: 700,
@@ -105,8 +106,8 @@ export default function Dashboard() {
 
       {/* Stats grid */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 16, marginBottom: 32 }}>
-        <StatCard c={c} icon={Users} label="Total Employees" value={employees.length.toString()} sub="Active on payroll" color="#8b5cf6" />
-        <StatCard c={c} icon={DollarSign} label="Monthly Payroll" value={`$${totalPayroll.toLocaleString()}`} sub="USDC per month" color="#06b6d4" />
+        <StatCard c={c} icon={Users} label="Total Employees" value={employees.length.toString()} sub="Active on payroll" color="#F97316" />
+        <StatCard c={c} icon={DollarSign} label="Monthly Payroll" value={`$${totalPayroll.toLocaleString()}`} sub="USDC per month" color="#EF4444" />
         <StatCard c={c} icon={TrendingUp} label="Payroll Runs" value={payrollHistory.length.toString()} sub="All completed" color="#10b981" />
         <StatCard
           c={c}
@@ -123,7 +124,7 @@ export default function Dashboard() {
         <div style={{ backgroundColor: c.cardBg, border: `1px solid ${c.border}`, borderRadius: 16, padding: 24 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
             <h3 style={{ fontSize: 16, fontWeight: 700, color: c.heading }}>Recent Payroll Runs</h3>
-            <Link to="/compliance" style={{ fontSize: 12, color: '#8b5cf6', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 4 }}>
+            <Link to="/compliance" style={{ fontSize: 12, color: '#F97316', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 4 }}>
               View all <ChevronRight size={12} />
             </Link>
           </div>
@@ -153,7 +154,7 @@ export default function Dashboard() {
                     href={`https://explorer.solana.com/tx/${run.txSignature}?cluster=devnet`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    style={{ fontSize: 11, color: '#8b5cf6', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 3, justifyContent: 'flex-end' }}
+                    style={{ fontSize: 11, color: '#F97316', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 3, justifyContent: 'flex-end' }}
                   >
                     Explorer <ExternalLink size={10} />
                   </a>
@@ -170,7 +171,7 @@ export default function Dashboard() {
         <div style={{ backgroundColor: c.cardBg, border: `1px solid ${c.border}`, borderRadius: 16, padding: 24 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
             <h3 style={{ fontSize: 16, fontWeight: 700, color: c.heading }}>Employees</h3>
-            <Link to="/employees" style={{ fontSize: 12, color: '#8b5cf6', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 4 }}>
+            <Link to="/employees" style={{ fontSize: 12, color: '#F97316', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 4 }}>
               Manage <ChevronRight size={12} />
             </Link>
           </div>
@@ -185,9 +186,9 @@ export default function Dashboard() {
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                   <div style={{
                     width: 36, height: 36, borderRadius: 10,
-                    background: 'linear-gradient(135deg, #7c3aed44, #06b6d444)',
+                    background: 'linear-gradient(135deg, #EA580C44, #EF444444)',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    fontSize: 14, fontWeight: 700, color: '#a78bfa',
+                    fontSize: 14, fontWeight: 700, color: '#FB923C',
                   }}>
                     {emp.name.charAt(0)}
                   </div>
@@ -211,8 +212,8 @@ export default function Dashboard() {
       {/* Quick actions */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 12, marginTop: 20 }}>
         {[
-          { to: '/employees', label: 'Add Employee', icon: Users, color: '#8b5cf6' },
-          { to: '/payroll', label: 'Run Payroll', icon: Play, color: '#06b6d4' },
+          { to: '/employees', label: 'Add Employee', icon: Users, color: '#F97316' },
+          { to: '/payroll', label: 'Run Payroll', icon: Play, color: '#EF4444' },
           { to: '/compliance', label: 'View Report', icon: CheckCircle, color: '#10b981' },
         ].map(action => (
           <Link

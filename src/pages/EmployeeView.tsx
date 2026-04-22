@@ -101,13 +101,13 @@ export default function EmployeeView() {
       <div style={{ maxWidth: 600, margin: '0 auto', textAlign: 'center', padding: '80px 24px' }}>
         <div style={{
           width: 80, height: 80,
-          background: 'linear-gradient(135deg, rgba(124,58,237,0.2), rgba(6,182,212,0.1))',
-          border: '1px solid rgba(139,92,246,0.3)',
+          background: 'linear-gradient(135deg, rgba(234,88,12,0.2), rgba(239,68,68,0.1))',
+          border: '1px solid rgba(249,115,22,0.3)',
           borderRadius: 24,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           margin: '0 auto 28px',
         }}>
-          <Eye size={36} color="#a78bfa" />
+          <Eye size={36} color="#FB923C" />
         </div>
         <h1 style={{ fontSize: 28, fontWeight: 800, letterSpacing: '-0.5px', marginBottom: 12, color: c.heading }}>
           Employee Portal
@@ -130,7 +130,7 @@ export default function EmployeeView() {
             { icon: Eye, text: 'Only you see your balance when you scan with your private key' },
           ].map((item, i) => (
             <div key={i} style={{ display: 'flex', gap: 10, alignItems: 'flex-start', marginBottom: i < 2 ? 10 : 0 }}>
-              <item.icon size={14} color="#8b5cf6" style={{ flexShrink: 0, marginTop: 2 }} />
+              <item.icon size={14} color="#F97316" style={{ flexShrink: 0, marginTop: 2 }} />
               <span style={{ fontSize: 13, color: c.muted }}>{item.text}</span>
             </div>
           ))}
@@ -152,7 +152,7 @@ export default function EmployeeView() {
           <h1 style={{ fontSize: 28, fontWeight: 800, letterSpacing: '-0.5px', marginBottom: 6, color: c.heading }}>My Salary</h1>
           <p style={{ color: c.muted, fontSize: 14 }}>
             Wallet{' '}
-            <span style={{ color: '#a78bfa', fontFamily: 'monospace' }}>
+            <span style={{ color: '#FB923C', fontFamily: 'monospace' }}>
               {publicKey?.toString().slice(0, 6)}...{publicKey?.toString().slice(-4)}
             </span>
           </p>
@@ -162,15 +162,15 @@ export default function EmployeeView() {
           borderRadius: 16, padding: 48, textAlign: 'center',
         }}>
           {loadState === 'registering' ? (
-            <UserPlus size={36} color="#a78bfa" style={{ margin: '0 auto 20px' }} />
+            <UserPlus size={36} color="#FB923C" style={{ margin: '0 auto 20px' }} />
           ) : (
             <div style={{
               width: 64, height: 64, borderRadius: 16,
-              background: 'rgba(139,92,246,0.12)', border: '1px solid rgba(139,92,246,0.25)',
+              background: 'rgba(249,115,22,0.12)', border: '1px solid rgba(249,115,22,0.25)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               margin: '0 auto 20px',
             }}>
-              <Loader2 size={28} color="#a78bfa" style={{ animation: 'spin 1s linear infinite' }} />
+              <Loader2 size={28} color="#FB923C" style={{ animation: 'spin 1s linear infinite' }} />
             </div>
           )}
           <p style={{ color: c.muted, fontSize: 15 }}>
@@ -210,7 +210,7 @@ export default function EmployeeView() {
             </div>
           )}
           <button onClick={initAndScan} style={{
-            background: 'linear-gradient(135deg, #7c3aed, #06b6d4)',
+            background: 'linear-gradient(135deg, #F97316, #EF4444)',
             color: 'white', border: 'none', borderRadius: 10,
             padding: '10px 24px', cursor: 'pointer',
             fontSize: 14, fontWeight: 700, fontFamily: 'inherit',
@@ -236,7 +236,7 @@ export default function EmployeeView() {
         <h1 style={{ fontSize: 28, fontWeight: 800, letterSpacing: '-0.5px', marginBottom: 6, color: c.heading }}>My Salary</h1>
         <p style={{ color: c.muted, fontSize: 14 }}>
           Scanning stealth addresses for wallet{' '}
-          <span style={{ color: '#a78bfa', fontFamily: 'monospace' }}>
+          <span style={{ color: '#FB923C', fontFamily: 'monospace' }}>
             {publicKey?.toString().slice(0, 6)}...{publicKey?.toString().slice(-4)}
           </span>
         </p>
@@ -259,14 +259,14 @@ export default function EmployeeView() {
 
       {/* Privacy badge */}
       <div style={{
-        backgroundColor: 'rgba(139,92,246,0.08)',
-        border: '1px solid rgba(139,92,246,0.2)',
+        backgroundColor: 'rgba(249,115,22,0.08)',
+        border: '1px solid rgba(249,115,22,0.2)',
         borderRadius: 12, padding: '12px 16px',
         display: 'flex', alignItems: 'center', gap: 10,
         marginBottom: 24,
       }}>
-        <Lock size={14} color="#a78bfa" />
-        <span style={{ fontSize: 13, color: '#c4b5fd' }}>
+        <Lock size={14} color="#FB923C" />
+        <span style={{ fontSize: 13, color: '#FDBA74' }}>
           This balance is encrypted on-chain. Only your wallet can decrypt it.
         </span>
       </div>
@@ -274,21 +274,21 @@ export default function EmployeeView() {
       {/* Balance card — always uses a solid dark gradient so white text is legible in both themes */}
       <div style={{
         background: isDark
-          ? 'linear-gradient(135deg, rgba(124,58,237,0.3), rgba(6,182,212,0.15))'
-          : 'linear-gradient(135deg, #4c1d95, #164e63)',
-        border: '1px solid rgba(139,92,246,0.4)',
+          ? 'linear-gradient(135deg, rgba(234,88,12,0.3), rgba(239,68,68,0.15))'
+          : 'linear-gradient(135deg, #7C2D12, #7F1D1D)',
+        border: '1px solid rgba(249,115,22,0.4)',
         borderRadius: 20, padding: '40px 32px', textAlign: 'center',
         marginBottom: 24, position: 'relative', overflow: 'hidden',
       }}>
         <div style={{
           position: 'absolute', top: -40, right: -40,
           width: 200, height: 200,
-          background: 'radial-gradient(circle, rgba(124,58,237,0.25), transparent)',
+          background: 'radial-gradient(circle, rgba(234,88,12,0.25), transparent)',
           borderRadius: '50%',
         }} />
 
         <div style={{ position: 'relative' }}>
-          <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: '2px', color: 'rgba(196,181,253,0.8)', marginBottom: 12 }}>
+          <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: '2px', color: 'rgba(253,186,116,0.8)', marginBottom: 12 }}>
             ENCRYPTED BALANCE
           </div>
 
@@ -298,12 +298,12 @@ export default function EmployeeView() {
             ) : (
               <span style={{ color: '#ffffff' }}>
                 {balanceDisplay}
-                <span style={{ fontSize: 20, color: 'rgba(196,181,253,0.8)', fontWeight: 500 }}> USDC</span>
+                <span style={{ fontSize: 20, color: 'rgba(253,186,116,0.8)', fontWeight: 500 }}> USDC</span>
               </span>
             )}
           </div>
 
-          <div style={{ fontSize: 14, color: 'rgba(196,181,253,0.7)', marginBottom: 28 }}>
+          <div style={{ fontSize: 14, color: 'rgba(253,186,116,0.7)', marginBottom: 28 }}>
             {scanResult?.received.length ?? 0} claimable UTXO{(scanResult?.received.length ?? 0) !== 1 ? 's' : ''} found
           </div>
 
@@ -313,15 +313,15 @@ export default function EmployeeView() {
               disabled={!hasBalance}
               style={{
                 background: hasBalance
-                  ? 'linear-gradient(135deg, #7c3aed, #06b6d4)'
+                  ? 'linear-gradient(135deg, #F97316, #EF4444)'
                   : 'rgba(255,255,255,0.12)',
-                color: hasBalance ? 'white' : 'rgba(196,181,253,0.6)',
+                color: hasBalance ? 'white' : 'rgba(253,186,116,0.6)',
                 border: 'none', borderRadius: 12,
                 padding: '14px 36px', cursor: hasBalance ? 'pointer' : 'not-allowed',
                 fontSize: 16, fontWeight: 700, fontFamily: 'inherit',
                 display: 'flex', alignItems: 'center', gap: 10,
                 margin: '0 auto',
-                boxShadow: hasBalance ? '0 0 40px rgba(124,58,237,0.35)' : 'none',
+                boxShadow: hasBalance ? '0 0 40px rgba(249,115,22,0.35)' : 'none',
               }}
             >
               <ArrowDownToLine size={18} />
@@ -330,7 +330,7 @@ export default function EmployeeView() {
           )}
 
           {withdrawState === 'generating' && (
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, color: '#a78bfa' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, color: '#FB923C' }}>
               <Loader2 size={18} style={{ animation: 'spin 1s linear infinite' }} />
               <span style={{ fontSize: 14 }}>Generating ZK proof for withdrawal...</span>
             </div>
@@ -344,7 +344,7 @@ export default function EmployeeView() {
           )}
 
           {withdrawState === 'processing' && (
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, color: '#06b6d4' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, color: '#EF4444' }}>
               <Loader2 size={18} style={{ animation: 'spin 1s linear infinite' }} />
               <span style={{ fontSize: 14 }}>Broadcasting to Solana...</span>
             </div>
@@ -365,7 +365,7 @@ export default function EmployeeView() {
                   href={`https://explorer.solana.com/tx/${withdrawTx}?cluster=devnet`}
                   target="_blank" rel="noopener noreferrer"
                   style={{
-                    fontSize: 12, color: '#8b5cf6', textDecoration: 'none',
+                    fontSize: 12, color: '#F97316', textDecoration: 'none',
                     display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 4,
                   }}
                 >
@@ -392,9 +392,9 @@ export default function EmployeeView() {
       {/* Stats row */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12, marginBottom: 24 }}>
         {[
-          { icon: DollarSign, label: 'Available Balance', value: isWithdrawn ? '$0.00' : balanceDisplay, color: '#8b5cf6' },
+          { icon: DollarSign, label: 'Available Balance', value: isWithdrawn ? '$0.00' : balanceDisplay, color: '#F97316' },
           { icon: CheckCircle, label: 'Claimable UTXOs', value: String(isWithdrawn ? 0 : (scanResult?.received.length ?? 0)), color: '#10b981' },
-          { icon: Clock, label: 'Last Scan', value: 'Just now', color: '#06b6d4' },
+          { icon: Clock, label: 'Last Scan', value: 'Just now', color: '#EF4444' },
         ].map(s => (
           <div key={s.label} style={{
             backgroundColor: c.cardBg, border: `1px solid ${c.border}`,
