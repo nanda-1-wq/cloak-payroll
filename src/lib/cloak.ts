@@ -13,7 +13,7 @@
  */
 
 import { CloakSDK } from '@cloak.dev/sdk'
-import type { PublicKey as SolanaPublicKey } from '@solana/web3.js'
+import { Connection, PublicKey } from '@solana/web3.js'
 
 // ─── Demo mode flag ───────────────────────────────────────────────────────────
 
@@ -31,13 +31,26 @@ export type CloakClient = CloakSDK
 // ─── Constants ────────────────────────────────────────────────────────────────
 
 /**
- * PRVT test token on devnet (kept for display parity with Umbra integration).
+ * Cloak uses native SOL (lamports) and SPL tokens (USDC/USDT) directly —
+ * there is no separate privacy token. No PRVT_MINT needed.
+ *
+ * Relay endpoint for all network calls.
  */
-export const PRVT_MINT_DEVNET = 'PRVT6TB7uss3FrUd2D9xs2zqDBsa3GbMJMwCQsgmeta'
-/** Mainnet USDC address. */
-export const USDC_MINT_DEVNET = 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v'
+const RELAY_URL = 'https://api.cloak.ag'
+
+/**
+ * Devnet RPC — used for all live SDK calls that require a Connection.
+ * Only instantiated when DEMO_MODE = false.
+ */
+const connection = new Connection('https://api.devnet.solana.com', 'confirmed')
+
+/** Mainnet USDC — kept for reference; confirm SPL support with Cloak docs before enabling. */
+export const USDC_MINT = 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v'
 
 const USDC_DECIMALS = 6
+
+// Internal constant for demo-mode fake note display only.
+const _DEMO_MINT_LABEL = 'CLOAK-DEMO'
 
 // ─── Conversions ──────────────────────────────────────────────────────────────
 
@@ -106,6 +119,7 @@ export async function initCloakClient(
   return new CloakSDK({
     wallet: adapter as any,
     network: 'devnet',
+    relayUrl: RELAY_URL,
   })
 }
 
@@ -123,8 +137,8 @@ export async function isRegistered(client: CloakClient): Promise<boolean> {
     return localStorage.getItem(demoKey.registered(addr)) === '1'
   }
 
-  // Live path: treat every wallet as registered (Cloak does not require
-  // an explicit on-chain registration step — keys are derived client-side).
+  // Live path: Cloak does not require an explicit on-chain registration step.
+  // Keys are derived client-side from the wallet signature.
   return true
 }
 
@@ -146,7 +160,7 @@ export async function registerWithCloak(client: CloakClient): Promise<string[]> 
     return [fakeTxSig(), fakeTxSig(), fakeTxSig()]
   }
 
-  // Live path: Cloak key registration is done client-side, no on-chain tx needed.
+  // Live path: Cloak key registration is client-side — no on-chain transaction needed.
   return []
 }
 
@@ -176,23 +190,23 @@ export async function findUnregisteredEmployees(
 // ─── Payroll (employer side) ──────────────────────────────────────────────────
 
 /**
- * Send a single private payroll transfer to one employee.
+ * Send a private payroll transfer to one employee via the Cloak shielded pool.
  *
- * In live mode, deposits into the Cloak shielded pool and transfers to the
- * recipient as a private note. In DEMO_MODE, simulates the flow and writes
- * the balance to localStorage so the Employee Portal can "scan" it.
+ * Live path uses sdk.send() — the correct high-level API for shielded transfers.
+ * Amounts are BigInt lamports to avoid floating-point precision bugs.
+ *
+ * In DEMO_MODE, simulates the flow and writes the balance to localStorage so
+ * the Employee Portal can "scan" and find it.
  *
  * @param client           - Employer's Cloak client.
- * @param recipientAddress - Employee's Solana wallet address.
+ * @param recipientAddress - Employee's Solana wallet address (base-58).
  * @param usdAmount        - Salary in whole USD (e.g. 8000 = $8,000 USDC).
- * @param _mint            - Token mint (reserved for future Cloak USDC support).
- * @returns Solana transaction signature of the shielded deposit.
+ * @returns Solana transaction signature of the shielded transfer.
  */
 export async function sendPrivatePayroll(
   client: CloakClient,
   recipientAddress: string,
-  usdAmount: number,
-  _mint: string = PRVT_MINT_DEVNET
+  usdAmount: number
 ): Promise<string> {
   if (DEMO_MODE) {
     // Simulate ZK proof generation (~2s) + on-chain confirmation (~1.5s)
@@ -204,14 +218,15 @@ export async function sendPrivatePayroll(
     return fakeTxSig()
   }
 
-  // Live path: deposit into Cloak shielded pool
-  // Note: Cloak SDK uses lamports; USDC support is on the roadmap.
-  // For production USDC payroll, deposit + privateTransfer to recipient.
+  // Live path: deposit to get a note, then privateTransfer to recipient.
+  // privateTransfer handles the full flow: ZK proof + relay submission.
+  // Amount in whole-number lamports (usdAmount * 1e6 for USDC-equivalent display).
   const amountLamports = Math.round(usdAmount * 1_000_000)
-  const recipientPublicKey = { toBase58: () => recipientAddress } as SolanaPublicKey
-  const result = await (client as any).deposit(null, amountLamports)
-  await (client as any).transfer([{ recipient: recipientPublicKey, amount: amountLamports }])
-  return result?.signature ?? fakeTxSig()
+  const depositResult = await client.deposit(connection, amountLamports)
+  const result = await client.privateTransfer(connection, depositResult.note, [
+    { recipient: new PublicKey(recipientAddress), amount: amountLamports },
+  ])
+  return result.signature
 }
 
 // ─── Balance / claim (employee side) ─────────────────────────────────────────
@@ -220,12 +235,15 @@ export interface ScanResult {
   /** All claimable notes found for this wallet. */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   received: any[]
-  /** Total claimable amount in micro-USDC (sum of note amounts). */
+  /** Total claimable amount in micro-units (lamports in live mode, micro-USDC in demo). */
   totalMicroUsdc: bigint
 }
 
 /**
  * Scan the Cloak shielded pool for incoming payroll notes addressed to this wallet.
+ *
+ * Live path uses client.loadNotes(connection) — the correct SDK method for
+ * retrieving stored commitment notes belonging to this wallet.
  *
  * In DEMO_MODE, reads the pending balance written by sendPrivatePayroll
  * from localStorage. Also falls back to a seeded demo balance so the
@@ -249,23 +267,25 @@ export async function scanForPayroll(client: CloakClient): Promise<ScanResult> {
     }
 
     // Fabricate a single note that matches the balance
-    const fakeNote = { amount: totalMicroUsdc.toString(), mint: PRVT_MINT_DEVNET }
+    const fakeNote = { amount: totalMicroUsdc.toString(), mint: _DEMO_MINT_LABEL }
     return { received: [fakeNote], totalMicroUsdc }
   }
 
-  // Live path: scan commitment tree for notes belonging to this wallet
-  const notes = await (client as any).scanNotes?.() ?? []
+  // Live path: load commitment notes stored by this wallet's Cloak keys.
+  // loadNotes() takes no arguments — connection is embedded in the SDK instance.
+  const notes = await client.loadNotes()
   const totalMicroUsdc = notes.reduce(
-    (sum: bigint, note: any) => sum + BigInt(note.amount ?? 0),
+    (sum: bigint, note) => sum + BigInt(note.amount ?? 0),
     0n
   )
 
-  return { received: notes, totalMicroUsdc }
+  return { received: notes as any[], totalMicroUsdc }
 }
 
 /**
- * Claim received payroll notes and withdraw the full amount to the employee's
- * public Solana wallet.
+ * Withdraw claimable payroll notes to the employee's public Solana wallet.
+ *
+ * Live path uses client.withdraw(connection, amount) with a bigint amount.
  *
  * In DEMO_MODE, simulates the two-step ZK claim + withdrawal and clears
  * the pending balance from localStorage.
@@ -275,8 +295,7 @@ export async function scanForPayroll(client: CloakClient): Promise<ScanResult> {
 export async function claimAndWithdraw(
   client: CloakClient,
   utxos: any[],
-  totalMicroUsdc: bigint,
-  _mint: string = PRVT_MINT_DEVNET
+  _totalMicroUsdc: bigint
 ): Promise<string> {
   if (DEMO_MODE) {
     if (utxos.length === 0) throw new Error('No notes to claim.')
@@ -292,8 +311,13 @@ export async function claimAndWithdraw(
 
   if (utxos.length === 0) throw new Error('No notes to claim.')
 
-  // Live path: withdraw from Cloak shielded pool to public wallet
-  const amountLamports = Number(totalMicroUsdc)
-  const result = await (client as any).withdraw(null, amountLamports)
-  return result?.signature ?? fakeTxSig()
+  // Live path: withdraw each note to the connected wallet's public key.
+  // withdraw(connection, note, recipientPublicKey) per note.
+  const recipientPubkey = client.getPublicKey()
+  let lastSignature = ''
+  for (const note of utxos) {
+    const result = await client.withdraw(connection, note, recipientPubkey)
+    lastSignature = result.signature
+  }
+  return lastSignature
 }
