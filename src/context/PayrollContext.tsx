@@ -28,6 +28,12 @@ interface PayrollContextType {
 
 const PayrollContext = createContext<PayrollContextType | null>(null)
 
+function daysAgo(days: number): string {
+  const d = new Date()
+  d.setDate(d.getDate() - days)
+  return d.toISOString().split('T')[0]
+}
+
 const MOCK_EMPLOYEES: Employee[] = [
   {
     id: '1',
@@ -35,7 +41,7 @@ const MOCK_EMPLOYEES: Employee[] = [
     walletAddress: '7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU',
     salary: 8000,
     department: 'Engineering',
-    addedAt: '2026-03-01',
+    addedAt: daysAgo(52),
   },
   {
     id: '2',
@@ -43,7 +49,7 @@ const MOCK_EMPLOYEES: Employee[] = [
     walletAddress: '3yZe8pYj3GH1dF9kQnVmW2rS5tU7vX6aB4cD8eR1qP0',
     salary: 6500,
     department: 'Design',
-    addedAt: '2026-03-15',
+    addedAt: daysAgo(38),
   },
   {
     id: '3',
@@ -51,14 +57,14 @@ const MOCK_EMPLOYEES: Employee[] = [
     walletAddress: '9mN2oP4qR6sT8uV0wX1yZ3aB5cD7eF9gH1iJ3kL5mN7',
     salary: 7200,
     department: 'Marketing',
-    addedAt: '2026-04-01',
+    addedAt: daysAgo(21),
   },
 ]
 
 const MOCK_HISTORY: PayrollRun[] = [
   {
     id: '1',
-    date: '2026-04-18',
+    date: daysAgo(4),
     totalAmount: 21700,
     employeeCount: 3,
     txSignature: '4xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU2yZe8pYj3GH1dF9kQnV',
@@ -66,7 +72,7 @@ const MOCK_HISTORY: PayrollRun[] = [
   },
   {
     id: '2',
-    date: '2026-03-18',
+    date: daysAgo(35),
     totalAmount: 21700,
     employeeCount: 3,
     txSignature: '7mN2oP4qR6sT8uV0wX1yZ3aB5cD7eF9gH1iJ3kL5mN7oP4qR6sT8uV0wX1yZ3a',

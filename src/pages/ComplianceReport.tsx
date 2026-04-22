@@ -78,11 +78,15 @@ export default function ComplianceReport() {
   const exportPdf = () => {
     showToast('Opening print dialog — choose "Save as PDF" in your browser')
     const originalTitle = document.title
-    document.title = 'CloakPayroll — Confidential Payroll on Solana'
+    document.title = 'CloakPayroll - Confidential Payroll on Solana'
+
+    // Force browser to register the new title before opening print dialog
     setTimeout(() => {
       window.print()
-      document.title = originalTitle
-    }, 400)
+      setTimeout(() => {
+        document.title = originalTitle
+      }, 1000)
+    }, 500)
   }
 
   const copyViewingKey = async () => {
