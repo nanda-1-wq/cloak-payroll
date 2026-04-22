@@ -225,11 +225,17 @@ With two browser tabs open:
 
 ## Screenshots
 
-*(Screenshots to be added after final UI polish)*
+| Landing | Dashboard |
+|---|---|
+| ![Landing](screenshots/landing.png) | ![Dashboard](screenshots/dashboard.png) |
 
-| Landing | Dashboard | Run Payroll | Employee Portal | Compliance |
-|---|---|---|---|---|
-| — | — | — | — | — |
+| Run Payroll | Employee Balance | Compliance |
+|---|---|---|
+| ![Run Payroll](screenshots/payroll.png) | ![Employee Balance](screenshots/balance.png) | ![Compliance](screenshots/compliance.png) |
+
+| Employee Portal | Export PDF |
+|---|---|
+| ![Employee Portal](screenshots/employee.png) | ![Export PDF](screenshots/exportPDF.png) |
 
 ---
 
