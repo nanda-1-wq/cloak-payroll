@@ -393,7 +393,7 @@ export default function EmployeeView() {
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12, marginBottom: 24 }}>
         {[
           { icon: DollarSign, label: 'Available Balance', value: isWithdrawn ? '$0.00' : balanceDisplay, color: '#F97316' },
-          { icon: CheckCircle, label: 'Claimable UTXOs', value: String(isWithdrawn ? 0 : (scanResult?.received.length ?? 0)), color: '#10b981' },
+          { icon: CheckCircle, label: 'Claimable UTXOs', value: String(isWithdrawn ? 0 : (scanResult?.received.length ?? 0)), color: '#FB923C' },
           { icon: Clock, label: 'Last Scan', value: 'Just now', color: '#EF4444' },
         ].map(s => (
           <div key={s.label} style={{

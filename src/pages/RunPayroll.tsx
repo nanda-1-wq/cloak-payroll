@@ -165,7 +165,7 @@ export default function RunPayroll() {
               {[
                 { icon: Users, label: 'Employees', value: employees.length.toString(), color: '#F97316' },
                 { icon: DollarSign, label: 'Total Amount', value: `$${totalPayroll.toLocaleString()}`, color: '#EF4444' },
-                { icon: Zap, label: 'Pay Date', value: today, color: '#10b981' },
+                { icon: Zap, label: 'Pay Date', value: today, color: '#FB923C' },
               ].map(s => (
                 <div key={s.label} style={{
                   backgroundColor: c.rowBg, borderRadius: 12, padding: '16px',

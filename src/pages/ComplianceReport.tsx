@@ -153,7 +153,7 @@ export default function ComplianceReport() {
           >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <Key size={16} color="#10b981" />
+                <Key size={16} color="#FB923C" />
                 <span style={{ fontSize: 16, fontWeight: 700, color: c.heading }}>Full Viewing Key</span>
               </div>
               <button
@@ -291,11 +291,11 @@ export default function ComplianceReport() {
           {/* Viewing key */}
           {reportState === 'ready' && (
             <div style={{
-              backgroundColor: c.cardBg, border: '1px solid rgba(16,185,129,0.3)',
+              backgroundColor: c.cardBg, border: '1px solid rgba(249,115,22,0.3)',
               borderRadius: 16, padding: 20,
             }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
-                <Key size={15} color="#10b981" />
+                <Key size={15} color="#FB923C" />
                 <span style={{ fontSize: 14, fontWeight: 700, color: c.heading }}>Viewing Key</span>
               </div>
 
@@ -315,10 +315,10 @@ export default function ComplianceReport() {
                   onClick={copyViewingKey}
                   style={{
                     flex: 1,
-                    backgroundColor: vkCopied ? 'rgba(16,185,129,0.1)' : 'rgba(16,185,129,0.1)',
-                    border: `1px solid ${vkCopied ? 'rgba(16,185,129,0.4)' : 'rgba(16,185,129,0.3)'}`,
+                    backgroundColor: vkCopied ? 'rgba(16,185,129,0.1)' : 'rgba(249,115,22,0.08)',
+                    border: `1px solid ${vkCopied ? 'rgba(16,185,129,0.4)' : 'rgba(249,115,22,0.25)'}`,
                     borderRadius: 8, padding: '8px 6px',
-                    color: '#10b981', cursor: 'pointer',
+                    color: vkCopied ? '#10b981' : '#FB923C', cursor: 'pointer',
                     fontSize: 12, fontWeight: 600, fontFamily: 'inherit',
                     display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 5,
                     transition: 'all 0.2s',
@@ -451,7 +451,7 @@ export default function ComplianceReport() {
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12, marginBottom: 24 }}>
                 {[
                   { icon: Users, label: 'Active Employees', value: employees.length.toString(), color: '#F97316' },
-                  { icon: DollarSign, label: 'Total Disbursed', value: `$${ytdTotal.toLocaleString()}`, color: '#10b981' },
+                  { icon: DollarSign, label: 'Total Disbursed', value: `$${ytdTotal.toLocaleString()}`, color: '#F97316' },
                   { icon: CheckCircle, label: 'Payroll Runs', value: payrollHistory.length.toString(), color: '#EF4444' },
                 ].map(s => (
                   <div key={s.label} style={{
@@ -568,13 +568,13 @@ export default function ComplianceReport() {
               {/* Attestation */}
               <div style={{
                 marginTop: 24,
-                backgroundColor: 'rgba(16,185,129,0.08)',
-                border: '1px solid rgba(16,185,129,0.2)',
+                backgroundColor: 'rgba(249,115,22,0.08)',
+                border: '1px solid rgba(249,115,22,0.2)',
                 borderRadius: 12, padding: '16px',
               }}>
                 <div style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
-                  <Shield size={15} color="#10b981" style={{ flexShrink: 0, marginTop: 1 }} />
-                  <div style={{ fontSize: 12, color: '#6ee7b7', lineHeight: 1.6 }}>
+                  <Shield size={15} color="#F97316" style={{ flexShrink: 0, marginTop: 1 }} />
+                  <div style={{ fontSize: 12, color: '#FDBA74', lineHeight: 1.6 }}>
                     <strong>Cryptographic Attestation:</strong> This report was generated using Cloak viewing keys. All payment amounts and recipient addresses have been cryptographically verified on Solana Devnet. This document can be shared with auditors, accountants, and regulators as proof of payroll compliance.
                   </div>
                 </div>

@@ -19,7 +19,7 @@ const FEATURES = [
     icon: Eye,
     title: 'Viewing Keys',
     desc: 'Generate compliance reports for auditors without revealing anything to the public or other employees.',
-    color: '#10b981',
+    color: '#FB923C',
   },
   {
     icon: FileCheck,
@@ -310,7 +310,7 @@ export default function Landing() {
           borderRadius: 24, padding: '60px 40px', textAlign: 'center',
         }}>
           <div style={{ display: 'flex', justifyContent: 'center', gap: 6, marginBottom: 24 }}>
-            {[0,1,2].map(i => <CheckCircle key={i} size={16} color="#10b981" />)}
+            {[0,1,2].map(i => <CheckCircle key={i} size={16} color="#F97316" />)}
           </div>
           <h2 style={{ fontSize: 36, fontWeight: 700, letterSpacing: '-1px', marginBottom: 12, color: c.heading }}>
             Ready to pay privately?

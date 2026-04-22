@@ -108,7 +108,7 @@ export default function Dashboard() {
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 16, marginBottom: 32 }}>
         <StatCard c={c} icon={Users} label="Total Employees" value={employees.length.toString()} sub="Active on payroll" color="#F97316" />
         <StatCard c={c} icon={DollarSign} label="Monthly Payroll" value={`$${totalPayroll.toLocaleString()}`} sub="USDC per month" color="#EF4444" />
-        <StatCard c={c} icon={TrendingUp} label="Payroll Runs" value={payrollHistory.length.toString()} sub="All completed" color="#10b981" />
+        <StatCard c={c} icon={TrendingUp} label="Payroll Runs" value={payrollHistory.length.toString()} sub="All completed" color="#F97316" />
         <StatCard
           c={c}
           icon={Clock}
@@ -214,7 +214,7 @@ export default function Dashboard() {
         {[
           { to: '/employees', label: 'Add Employee', icon: Users, color: '#F97316' },
           { to: '/payroll', label: 'Run Payroll', icon: Play, color: '#EF4444' },
-          { to: '/compliance', label: 'View Report', icon: CheckCircle, color: '#10b981' },
+          { to: '/compliance', label: 'View Report', icon: CheckCircle, color: '#FB923C' },
         ].map(action => (
           <Link
             key={action.to}
