@@ -127,7 +127,7 @@ export default function AddEmployees() {
                 style={{ ...inputStyle, fontFamily: 'monospace', fontSize: 12 }}
               />
               <p style={{ fontSize: 11, color: c.faint, marginTop: 4 }}>
-                Payments will be sent to this address via Umbra stealth addresses
+                Payments will be sent to this address via Cloak shielded notes
               </p>
             </div>
 

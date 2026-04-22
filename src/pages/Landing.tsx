@@ -60,7 +60,7 @@ export default function Landing() {
               <Shield size={18} color="white" />
             </div>
             <span style={{ fontWeight: 700, fontSize: 19, letterSpacing: '-0.5px', color: c.logoText }}>
-              Private<span style={{ color: '#8b5cf6' }}>Payroll</span>
+              Cloak<span style={{ color: '#8b5cf6' }}>Payroll</span>
             </span>
           </div>
 
@@ -213,7 +213,7 @@ export default function Landing() {
             Privacy-first payroll infrastructure
           </h2>
           <p style={{ color: c.muted, fontSize: 16 }}>
-            Built on the Umbra Privacy SDK - zero-knowledge proofs for every payment
+            Built on the Cloak SDK - zero-knowledge proofs for every payment
           </p>
         </div>
         <div style={{
@@ -287,7 +287,7 @@ export default function Landing() {
           BUILT WITH
         </p>
         <div style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap' }}>
-          {['Umbra Privacy SDK', 'Solana Web3.js', 'Phantom Wallet', 'React + Vite', 'ZK Proofs'].map(tech => (
+          {['Cloak SDK', 'Solana Web3.js', 'Phantom Wallet', 'React + Vite', 'ZK Proofs'].map(tech => (
             <span key={tech} style={{
               padding: '8px 18px',
               backgroundColor: c.cardBg,
@@ -342,7 +342,7 @@ export default function Landing() {
         display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
       }}>
         <Globe size={13} />
-        <span>PrivatePayroll - Powered by Umbra Privacy SDK on Solana Devnet - Superteam Frontier 2025</span>
+        <span>CloakPayroll - Powered by Cloak SDK on Solana Devnet - Cloak Frontier 2025</span>
       </footer>
     </div>
   )

@@ -46,7 +46,7 @@ export default function Layout({ children }: { children: ReactNode }) {
               <Shield size={18} color="white" />
             </div>
             <span style={{ fontWeight: 700, fontSize: 18, color: c.logoText, letterSpacing: '-0.5px' }}>
-              Private<span style={{ color: '#8b5cf6' }}>Payroll</span>
+              Cloak<span style={{ color: '#8b5cf6' }}>Payroll</span>
             </span>
           </Link>
 
@@ -157,8 +157,8 @@ export default function Layout({ children }: { children: ReactNode }) {
         fontSize: 13,
         backgroundColor: c.navBg,
       }}>
-        <span>PrivatePayroll - Powered by </span>
-        <span style={{ color: '#8b5cf6' }}>Umbra Privacy SDK</span>
+        <span>CloakPayroll - Powered by </span>
+        <span style={{ color: '#8b5cf6' }}>Cloak SDK</span>
         <span> on Solana Devnet</span>
       </footer>
     </div>

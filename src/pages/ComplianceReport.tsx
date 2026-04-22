@@ -67,7 +67,7 @@ export default function ComplianceReport() {
   }
 
   const viewingKey = publicKey
-    ? `umbra:vk:${publicKey.toString().slice(0, 8)}:${Date.now().toString(36)}`
+    ? `cloak:vk:${publicKey.toString().slice(0, 8)}:${Date.now().toString(36)}`
     : ''
 
   const showToast = (msg: string, ms = 3000) => {
@@ -189,7 +189,7 @@ export default function ComplianceReport() {
       <div className="no-print" style={{ marginBottom: 32 }}>
         <h1 style={{ fontSize: 28, fontWeight: 800, letterSpacing: '-0.5px', marginBottom: 6, color: c.heading }}>Compliance Report</h1>
         <p style={{ color: c.muted, fontSize: 14 }}>
-          Generate auditable payroll records using Umbra viewing keys - without exposing private data on-chain.
+          Generate auditable payroll records using Cloak viewing keys - without exposing private data on-chain.
         </p>
       </div>
 
@@ -212,7 +212,7 @@ export default function ComplianceReport() {
             Privacy-preserving compliance using Viewing Keys
           </div>
           <div style={{ fontSize: 13, color: c.muted, lineHeight: 1.6 }}>
-            Umbra viewing keys let you prove you made specific payments to auditors and regulators without revealing any on-chain data to the public. Share the viewing key with your accountant - they can verify all payments without seeing wallet addresses or amounts on the blockchain.
+            Cloak viewing keys let you prove you made specific payments to auditors and regulators without revealing any on-chain data to the public. Share the viewing key with your accountant - they can verify all payments without seeing wallet addresses or amounts on the blockchain.
           </div>
         </div>
       </div>
@@ -426,7 +426,7 @@ export default function ComplianceReport() {
                   { icon: Building2, label: 'Organization', value: 'Acme Corp (Demo)' },
                   { icon: Shield, label: 'Blockchain', value: 'Solana Devnet' },
                   { icon: Calendar, label: 'Generated', value: new Date().toLocaleDateString() },
-                  { icon: Key, label: 'Protocol', value: 'Umbra Privacy SDK' },
+                  { icon: Key, label: 'Protocol', value: 'Cloak SDK' },
                 ].map(item => (
                   <div key={item.label} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                     <item.icon size={14} color={c.faint} />
@@ -566,7 +566,7 @@ export default function ComplianceReport() {
                 <div style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
                   <Shield size={15} color="#10b981" style={{ flexShrink: 0, marginTop: 1 }} />
                   <div style={{ fontSize: 12, color: '#6ee7b7', lineHeight: 1.6 }}>
-                    <strong>Cryptographic Attestation:</strong> This report was generated using Umbra viewing keys. All payment amounts and recipient addresses have been cryptographically verified on Solana Devnet. This document can be shared with auditors, accountants, and regulators as proof of payroll compliance.
+                    <strong>Cryptographic Attestation:</strong> This report was generated using Cloak viewing keys. All payment amounts and recipient addresses have been cryptographically verified on Solana Devnet. This document can be shared with auditors, accountants, and regulators as proof of payroll compliance.
                   </div>
                 </div>
               </div>

@@ -7,16 +7,16 @@ import {
 } from 'lucide-react'
 import { useTheme, themeColors } from '../context/ThemeContext'
 import {
-  initUmbraClient,
+  initCloakClient,
   isRegistered,
-  registerWithUmbra,
+  registerWithCloak,
   scanForPayroll,
   claimAndWithdraw,
   formatMicroUsdc,
   DEMO_MODE,
   type ScanResult,
-  type UmbraClient,
-} from '../lib/umbra'
+  type CloakClient,
+} from '../lib/cloak'
 
 type LoadState = 'idle' | 'registering' | 'scanning' | 'ready' | 'error'
 type WithdrawState = 'idle' | 'generating' | 'confirming' | 'processing' | 'done'
@@ -26,7 +26,7 @@ export default function EmployeeView() {
   const { isDark } = useTheme()
   const c = themeColors(isDark)
 
-  const [client, setClient] = useState<UmbraClient | null>(null)
+  const [client, setClient] = useState<CloakClient | null>(null)
   const [loadState, setLoadState] = useState<LoadState>('idle')
   const [scanResult, setScanResult] = useState<ScanResult | null>(null)
   const [loadError, setLoadError] = useState('')
@@ -43,12 +43,12 @@ export default function EmployeeView() {
     setClient(null)
 
     try {
-      const cl = await initUmbraClient(wallet, publicKey.toBase58())
+      const cl = await initCloakClient(wallet, publicKey.toBase58())
 
       const registered = await isRegistered(cl)
       if (!registered) {
         setLoadState('registering')
-        await registerWithUmbra(cl)
+        await registerWithCloak(cl)
       }
 
       setClient(cl)
@@ -142,8 +142,8 @@ export default function EmployeeView() {
   // Loading / registering / scanning
   if (loadState !== 'ready' && loadState !== 'error') {
     const messages: Record<string, string> = {
-      idle: 'Initialising Umbra client...',
-      registering: 'Registering with Umbra privacy protocol...',
+      idle: 'Initialising Cloak client...',
+      registering: 'Registering with Cloak privacy protocol...',
       scanning: 'Scanning stealth addresses for your payments...',
     }
     return (

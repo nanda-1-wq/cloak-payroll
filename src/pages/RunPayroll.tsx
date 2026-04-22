@@ -9,13 +9,13 @@ import {
   Loader2, Users, DollarSign, Zap, Info, UserPlus,
 } from 'lucide-react'
 import {
-  initUmbraClient,
+  initCloakClient,
   isRegistered,
-  registerWithUmbra,
+  registerWithCloak,
   sendPrivatePayroll,
   findUnregisteredEmployees,
   DEMO_MODE,
-} from '../lib/umbra'
+} from '../lib/cloak'
 
 type Step = 'review' | 'registering' | 'checking' | 'confirming' | 'processing' | 'complete' | 'error'
 
@@ -42,11 +42,11 @@ export default function RunPayroll() {
 
     try {
       setStep('registering')
-      const client = await initUmbraClient(wallet, publicKey.toBase58())
+      const client = await initCloakClient(wallet, publicKey.toBase58())
 
       const alreadyRegistered = await isRegistered(client)
       if (!alreadyRegistered) {
-        await registerWithUmbra(client)
+        await registerWithCloak(client)
       }
 
       setStep('checking')
@@ -55,8 +55,8 @@ export default function RunPayroll() {
       if (unregistered.length > 0) {
         setUnregisteredEmps(unregistered)
         throw new Error(
-          `${unregistered.length} employee wallet${unregistered.length > 1 ? 's are' : ' is'} not registered with Umbra. ` +
-          `They must connect to the Employee Portal and complete Umbra registration before receiving payroll.`
+          `${unregistered.length} employee wallet${unregistered.length > 1 ? 's are' : ' is'} not registered with Cloak. ` +
+          `They must connect to the Employee Portal and complete Cloak registration before receiving payroll.`
         )
       }
 
@@ -121,7 +121,7 @@ export default function RunPayroll() {
       <div style={{ marginBottom: 32 }}>
         <h1 style={{ fontSize: 28, fontWeight: 800, letterSpacing: '-0.5px', marginBottom: 6, color: c.heading }}>Run Payroll</h1>
         <p style={{ color: c.muted, fontSize: 14 }}>
-          All transfers are encrypted using Umbra's stealth address protocol. Amounts and recipients stay private.
+          All transfers are encrypted using Cloak's shielded pool protocol. Amounts and recipients stay private.
         </p>
       </div>
 
@@ -292,9 +292,9 @@ export default function RunPayroll() {
           }}>
             <UserPlus size={32} color="#a78bfa" />
           </div>
-          <h2 style={{ fontSize: 22, fontWeight: 700, marginBottom: 8, color: c.heading }}>Setting Up Umbra</h2>
+          <h2 style={{ fontSize: 22, fontWeight: 700, marginBottom: 8, color: c.heading }}>Setting Up Cloak</h2>
           <p style={{ color: c.muted, fontSize: 15 }}>
-            Registering your wallet with the Umbra privacy protocol.
+            Registering your wallet with the Cloak privacy protocol.
             Approve the signing prompt in Phantom.
           </p>
           <div style={{ marginTop: 20, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, color: '#a78bfa' }}>
@@ -320,7 +320,7 @@ export default function RunPayroll() {
           </div>
           <h2 style={{ fontSize: 22, fontWeight: 700, marginBottom: 8, color: c.heading }}>Verifying Recipients</h2>
           <p style={{ color: c.muted, fontSize: 15 }}>
-            Checking that all employees have registered with Umbra...
+            Checking that all employees have registered with Cloak...
           </p>
           <div style={{ marginTop: 20, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, color: '#06b6d4' }}>
             <Loader2 size={18} style={{ animation: 'spin 1s linear infinite' }} />
@@ -462,7 +462,7 @@ export default function RunPayroll() {
             ${totalPayroll.toLocaleString()} USDC sent.
           </p>
           <p style={{ color: c.faint, fontSize: 13, marginBottom: 28 }}>
-            All transfers were encrypted on-chain using Umbra stealth addresses.
+            All transfers were encrypted on-chain using Cloak shielded notes.
           </p>
 
           {txSigs.length > 0 && (
@@ -536,8 +536,8 @@ export default function RunPayroll() {
           {unregisteredEmps.length > 0 ? (
             <div style={{ marginBottom: 24, textAlign: 'left' }}>
               <p style={{ color: c.muted, fontSize: 14, marginBottom: 12 }}>
-                The following employee wallets are not registered with Umbra.
-                They must visit the <strong>Employee Portal</strong> and complete the one-time Umbra setup before they can receive private payroll:
+                The following employee wallets are not registered with Cloak.
+                They must visit the <strong>Employee Portal</strong> and complete the one-time Cloak setup before they can receive private payroll:
               </p>
               <div style={{
                 backgroundColor: c.rowBg, borderRadius: 10, padding: '10px 14px',
@@ -556,7 +556,7 @@ export default function RunPayroll() {
             </div>
           ) : (
             <p style={{ color: c.muted, marginBottom: 28 }}>
-              Make sure your wallet is connected, you have PRVT test tokens on devnet, and employees are registered with Umbra.
+              Make sure your wallet is connected, you have PRVT test tokens on devnet, and employees are registered with Cloak.
             </p>
           )}
           <button onClick={reset} style={{
