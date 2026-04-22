@@ -11,7 +11,7 @@
 | | URL |
 |---|---|
 | Demo Video | https://youtu.be/1B3E5A3r72o |
-| Live Frontend | *(Vercel URL — coming after deploy)* |
+| Live Frontend | https://cloak-payroll-iota.vercel.app |
 | Cloak SDK Docs | https://docs.cloak.ag/sdk/introduction |
 | Cloak Website | https://www.cloak.ag |
 
