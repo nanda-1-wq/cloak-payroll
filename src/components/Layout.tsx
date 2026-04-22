@@ -46,7 +46,7 @@ export default function Layout({ children }: { children: ReactNode }) {
               />
               <span style={{ fontWeight: 800, fontSize: 18, letterSpacing: '-0.5px', color: c.logoText }}>AK</span>
             </div>
-            <span style={{ fontWeight: 600, fontSize: 18, color: isDark ? '#ffffff' : '#0f172a' }}>
+            <span style={{ fontWeight: 800, fontSize: 18, letterSpacing: '-0.5px', color: '#8b5cf6' }}>
               Payroll
             </span>
           </Link>

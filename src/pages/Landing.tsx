@@ -60,7 +60,7 @@ export default function Landing() {
               />
               <span style={{ fontWeight: 800, fontSize: 19, letterSpacing: '-0.5px', color: c.logoText }}>AK</span>
             </div>
-            <span style={{ fontWeight: 600, fontSize: 19, color: isDark ? '#ffffff' : '#0f172a' }}>
+            <span style={{ fontWeight: 800, fontSize: 19, letterSpacing: '-0.5px', color: '#8b5cf6' }}>
               Payroll
             </span>
           </div>
