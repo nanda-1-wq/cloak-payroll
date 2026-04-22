@@ -50,17 +50,18 @@ export default function Landing() {
         boxShadow: isDark ? 'none' : '0 1px 4px rgba(0,0,0,0.06)',
       }}>
         <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 24px', display: 'flex', alignItems: 'center', height: 64 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <div style={{
-              width: 34, height: 34,
-              background: 'linear-gradient(135deg, #7c3aed, #06b6d4)',
-              borderRadius: 9,
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-            }}>
-              <Shield size={18} color="white" />
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 0 }}>
+              <span style={{ fontWeight: 800, fontSize: 19, letterSpacing: '-0.5px', color: c.logoText }}>CL</span>
+              <img
+                src="/cloak-logo.png"
+                alt=""
+                style={{ height: 22, width: 22, objectFit: 'cover', borderRadius: 3, margin: '0 1px' }}
+              />
+              <span style={{ fontWeight: 800, fontSize: 19, letterSpacing: '-0.5px', color: c.logoText }}>AK</span>
             </div>
-            <span style={{ fontWeight: 700, fontSize: 19, letterSpacing: '-0.5px', color: c.logoText }}>
-              Cloak<span style={{ color: '#8b5cf6' }}>Payroll</span>
+            <span style={{ fontWeight: 600, fontSize: 19, color: isDark ? '#ffffff' : '#0f172a' }}>
+              Payroll
             </span>
           </div>
 
