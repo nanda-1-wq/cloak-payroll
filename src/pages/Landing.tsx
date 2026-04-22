@@ -95,7 +95,7 @@ export default function Landing() {
             <Link
               to="/dashboard"
               style={{
-                background: 'linear-gradient(135deg, #7c3aed, #06b6d4)',
+                background: 'linear-gradient(135deg, #F97316, #EF4444)',
                 color: 'white', textDecoration: 'none',
                 padding: '8px 20px', borderRadius: 10,
                 fontSize: 14, fontWeight: 600,
@@ -113,7 +113,7 @@ export default function Landing() {
         <div style={{
           position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)',
           width: 800, height: 500,
-          background: 'radial-gradient(ellipse at center, rgba(124, 58, 237, 0.12) 0%, transparent 70%)',
+          background: 'radial-gradient(ellipse at center, rgba(249, 115, 22, 0.1) 0%, transparent 70%)',
           pointerEvents: 'none',
         }} />
 
@@ -121,15 +121,15 @@ export default function Landing() {
           {/* Badge */}
           <div style={{
             display: 'inline-flex', alignItems: 'center', gap: 8,
-            backgroundColor: 'rgba(139, 92, 246, 0.1)',
-            border: '1px solid rgba(139, 92, 246, 0.3)',
+            backgroundColor: 'rgba(249, 115, 22, 0.1)',
+            border: '1px solid rgba(249, 115, 22, 0.3)',
             borderRadius: 100,
             padding: '6px 16px',
             marginBottom: 32,
           }}>
-            <Zap size={13} color="#a78bfa" />
-            <span style={{ fontSize: 13, color: '#a78bfa', fontWeight: 500 }}>
-              Built for the Superteam Frontier Hackathon
+            <Zap size={13} color="#F97316" />
+            <span style={{ fontSize: 13, color: '#F97316', fontWeight: 500 }}>
+              Built for the Superteam Frontier Hackathon — Cloak Track
             </span>
           </div>
 
@@ -141,26 +141,26 @@ export default function Landing() {
             marginBottom: 24,
             color: c.heading,
           }}>
-            Pay Your Team<br />
-            <span style={{ background: 'linear-gradient(90deg, #8b5cf6, #06b6d4)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-              Privately On-Chain
+            Private Payroll<br />
+            <span style={{ background: 'linear-gradient(90deg, #F97316, #EF4444)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+              Powered by Cloak
             </span>
           </h1>
 
           <p style={{ fontSize: 20, color: c.muted, maxWidth: 580, margin: '0 auto 48px', lineHeight: 1.6 }}>
-            Confidential payroll on Solana. Employees are paid with encrypted amounts and stealth addresses. No one sees who earns what.
+            Confidential salary payments on Solana using Cloak's shielded pool protocol. Zero knowledge proofs. Full compliance.
           </p>
 
           <div style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap' }}>
             <Link
               to="/dashboard"
               style={{
-                background: 'linear-gradient(135deg, #7c3aed, #06b6d4)',
+                background: 'linear-gradient(135deg, #F97316, #EF4444)',
                 color: 'white', textDecoration: 'none',
                 padding: '14px 32px', borderRadius: 12,
                 fontSize: 16, fontWeight: 700,
                 display: 'flex', alignItems: 'center', gap: 8,
-                boxShadow: '0 0 40px rgba(124, 58, 237, 0.3)',
+                boxShadow: '0 0 40px rgba(249, 115, 22, 0.35)',
               }}
             >
               Start as Employer <ChevronRight size={18} />
@@ -305,8 +305,8 @@ export default function Landing() {
       {/* CTA */}
       <section style={{ maxWidth: 1200, margin: '0 auto', padding: '0 24px 100px' }}>
         <div style={{
-          background: 'linear-gradient(135deg, rgba(124, 58, 237, 0.15), rgba(6, 182, 212, 0.08))',
-          border: '1px solid rgba(124, 58, 237, 0.3)',
+          background: 'linear-gradient(135deg, rgba(249, 115, 22, 0.1), rgba(239, 68, 68, 0.07))',
+          border: '1px solid rgba(249, 115, 22, 0.3)',
           borderRadius: 24, padding: '60px 40px', textAlign: 'center',
         }}>
           <div style={{ display: 'flex', justifyContent: 'center', gap: 6, marginBottom: 24 }}>
@@ -321,12 +321,12 @@ export default function Landing() {
           <Link
             to="/dashboard"
             style={{
-              background: 'linear-gradient(135deg, #7c3aed, #06b6d4)',
+              background: 'linear-gradient(135deg, #F97316, #EF4444)',
               color: 'white', textDecoration: 'none',
               padding: '14px 40px', borderRadius: 12,
               fontSize: 16, fontWeight: 700,
               display: 'inline-flex', alignItems: 'center', gap: 8,
-              boxShadow: '0 0 40px rgba(124, 58, 237, 0.4)',
+              boxShadow: '0 0 40px rgba(249, 115, 22, 0.4)',
             }}
           >
             Open Dashboard <ChevronRight size={18} />
