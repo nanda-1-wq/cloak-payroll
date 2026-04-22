@@ -1,253 +1,152 @@
-# PrivatePayroll
+# CloakPayroll
 
-**Confidential on-chain payroll powered by Umbra's stealth address protocol on Solana.**
+**Confidential on-chain payroll powered by Cloak SDK on Solana**
 
-> Built for [Superteam Frontier Hackathon](https://superteam.fun)
-## Demo Video
-[Watch on YouTube](https://youtu.be/1B3E5A3r72o)
+> Built for **Superteam Frontier Hackathon — Cloak Track**
+
+---
+
+## Links
+
+| | URL |
+|---|---|
+| Demo Video | https://youtu.be/1B3E5A3r72o |
+| Live Frontend | *(Vercel URL — coming after deploy)* |
+| Cloak SDK Docs | https://docs.cloak.ag/sdk/introduction |
+| Cloak Website | https://www.cloak.ag |
+
 ---
 
 ## The Problem
 
-Traditional on-chain payroll is a privacy disaster. Every salary transfer is permanently visible on the blockchain, anyone with a wallet address can see exactly how much every employee earns, when they get paid, and who the employer is. This exposes companies to competitive intelligence leaks, exposes employees to personal security risks, and creates compliance headaches when confidential compensation data becomes permanently public.
+Every salary payment on Solana is permanently public:
 
-Off-chain payroll solves privacy but loses the auditability, programmability, and trust guarantees that blockchains provide. Companies shouldn't have to choose between the two.
-
-**PrivatePayroll solves this.** It brings the programmability and auditability of on-chain payroll together with cryptographic privacy, salary amounts are encrypted inside ZK proofs, recipient addresses are ephemeral stealth addresses, and employers can still generate cryptographically-verified compliance reports for auditors using Umbra viewing keys.
-
-### Target Users
-
-| User | Pain Point | Solution |
-|------|-----------|----------|
-| **Startups & DAOs** | Token compensation is publicly visible, exposing equity structures | Encrypted USDC payroll with no on-chain amount leakage |
-| **Remote-first companies** | Cross-border payroll on public chains exposes staff salaries globally | Stealth address delivery — sender and recipient wallets are never linked |
-| **Finance & Legal teams** | Need audit trails without publishing raw blockchain data | Viewing key compliance reports shareable with accountants and regulators |
-| **Employees** | Salary visibility and personal security concerns | Claim salary privately; only you can decrypt your own balance |
+- **Amounts are visible** — anyone with a block explorer can read exactly what every employee earns
+- **Identities are exposed** — employer and employee wallet addresses are permanently linked on-chain
+- **Payment schedules reveal strategy** — pay frequency and amounts expose headcount, burn rate, and company runway to competitors
+- **No confidential on-chain payroll exists** — businesses that want the programmability and auditability of blockchain payments must accept full transparency or stay off-chain entirely
 
 ---
 
-## How It Uses the Umbra SDK
+## The Solution
 
-PrivatePayroll is built directly on top of [`@umbra-privacy/sdk`](https://www.npmjs.com/package/@umbra-privacy/sdk) v4 and [`@umbra-privacy/web-zk-prover`](https://www.npmjs.com/package/@umbra-privacy/web-zk-prover) v2. Every layer of Umbra's privacy stack is exercised.
+CloakPayroll wraps the **Cloak SDK** to make on-chain payroll fully private:
 
-### 1. Encrypted Transfer Amounts (ETAs)
+- Salary amounts are hidden inside a **Groth16 ZK-proof shielded pool** — no on-chain observer can read the value
+- Payments are routed to employees as **shielded UTXO notes** — the link between employer and employee wallets never appears on-chain
+- One click triggers a **batch disbursement** that settles all salaries in a single shielded transaction
+- Employees can share a **viewing key** with auditors or accountants to prove payment without revealing anything publicly
+- The entire flow — deposit, proof generation, relay, withdrawal — runs in the browser with **no server custody** of funds
 
-When an employer runs payroll, each payment is submitted as an **Encrypted Transfer Amount** - the USDC value is committed inside a ZK proof so no on-chain observer can read the salary amount, only that a deposit occurred. The app uses the browser-side ZK prover to generate this proof client-side before submission:
+---
+
+## How It Uses the Cloak SDK
+
+All privacy logic is isolated in [`src/lib/cloak.ts`](src/lib/cloak.ts). The integration exercises the full Cloak SDK stack.
+
+### Client initialization
 
 ```ts
-const zkProver = getCreateReceiverClaimableUtxoFromPublicBalanceProver()
-const createUtxo = getPublicBalanceToReceiverClaimableUtxoCreatorFunction(
-  { client },
-  { zkProver }
-)
-await createUtxo({
-  amount: toMicroUsdc(usdAmount),        // encrypted in the proof
-  destinationAddress: recipientAddress,  // stealth — not the employee's real wallet
-  mint: PRVT_MINT_DEVNET,
+import { CloakSDK } from '@cloak.dev/sdk'
+import { Connection } from '@solana/web3.js'
+
+const connection = new Connection('https://api.devnet.solana.com', 'confirmed')
+
+const sdk = new CloakSDK({
+  wallet: walletAdapter,        // Phantom via Wallet Standard
+  network: 'devnet',
+  relayUrl: 'https://api.cloak.ag',
 })
 ```
 
-### 2. Mixer Pool (Receiver-Claimable UTXOs)
+### Batch payroll disbursement — `deposit()` + `privateTransfer()`
 
-Payments are deposited into Umbra's confidential **mixer pool** as receiver-claimable UTXOs. This breaks the on-chain link between sender and recipient — the employer's wallet and the employee's wallet are never directly associated in any transaction. The UTXO sits encrypted in the pool until the correct employee scans and claims it.
-
-**Umbra Program ID on Solana Devnet:**
-```
-DSuKkyqGVGgo4QtPABfxKJKygUDACbUhirnuv63mEpAJ
-```
-
-**Token mint — Umbra PRVT test token (devnet):**
-```
-PRVT6TB7uss3FrUd2D9xs2zqDBsa3GbMJMwCQsgmeta
-```
-
-### 3. Stealth Address Scanning
-
-Employees connect their wallet to the Employee Portal and scan the Umbra Merkle tree for UTXOs addressed to their key. The scanner traverses the on-chain tree and decrypts only the records that belong to the connected wallet — no one else can see them:
+Each employee payment deposits into the shielded pool to generate a note, then `privateTransfer()` routes that note to the recipient. Cloak handles ZK proof generation and relay submission internally:
 
 ```ts
-const scan = getClaimableUtxoScannerFunction({ client })
-const result = await scan(0, 0)
-// result.received → UTXOs belonging to this wallet only
+// Deposit to enter the shielded pool — returns a CloakNote
+const depositResult = await sdk.deposit(connection, amountLamports)
+
+// privateTransfer: generates Groth16 proof + submits via relay
+const result = await sdk.privateTransfer(connection, depositResult.note, [
+  { recipient: new PublicKey(employeeWalletAddress), amount: amountLamports },
+])
+// result.signature — tx confirmed, amount invisible on-chain
 ```
 
-### 4. ZK Claim & Withdrawal
+Up to 5 recipients can be batched into a single `privateTransfer()` call.
 
-Withdrawing is a two-step ZK flow. First the employee generates a proof claiming their UTXOs into Umbra's Arcium MPC-backed encrypted balance. Then a second proof withdraws that balance to their standard Solana token account:
+### Employee balance scanning — `loadNotes()`
 
 ```ts
-// Step 1 — claim UTXO into encrypted balance (Arcium MPC round-trip)
-const claimProver = getClaimReceiverClaimableUtxoIntoEncryptedBalanceProver()
-const claim = getReceiverClaimableUtxoToEncryptedBalanceClaimerFunction(
-  { client },
-  { zkProver: claimProver, fetchBatchMerkleProof, relayer }
-)
-await claim(utxos)
-
-// Step 2 — withdraw encrypted balance → public ATA
-const withdraw = getEncryptedBalanceToPublicBalanceDirectWithdrawerFunction({ client })
-await withdraw(signer.address, mint, totalMicroUsdc)
+// Loads all commitment notes owned by this wallet's Cloak keys
+const notes = await sdk.loadNotes()
+const totalClaimable = notes.reduce((sum, n) => sum + BigInt(n.amount), 0n)
 ```
 
-### 5. Viewing Keys for Compliance
-
-Employers generate a **viewing key** scoped to their payroll history. This key can be shared with an accountant or tax authority - it decrypts payment records for verification without exposing the wallet or granting any ability to move funds. The Compliance Report page uses this to produce a fully cryptographically-attested audit trail that can be exported as PDF.
-
-### User Registration
-
-Before any private payment can be received, both employer and employee must register with Umbra's on-chain user account system. PrivatePayroll handles this transparently — it detects on first use whether the wallet is registered and performs the one-time three-transaction setup (account init + confidential key registration + anonymous commitment) before proceeding:
+### Salary withdrawal — `withdraw()`
 
 ```ts
-const register = getUserRegistrationFunction({ client }, { zkProver })
-await register({ confidential: true, anonymous: true })
+// Withdraws a note to the employee's public wallet
+const result = await sdk.withdraw(connection, note, sdk.getPublicKey())
+// result.signature — funds land in the employee's standard wallet
 ```
 
----
+### Compliance viewing keys
 
-## Demo Mode
+A viewing key is derived per employer and embedded in every compliance report. Sharing the key with an auditor lets them verify payment amounts and dates on-chain without exposing any public data — matching Cloak's selective-disclosure model.
 
-Umbra's devnet Arcium MPC pools are currently pending activation (`active_stealth_pool_indices: []` from `/v1/relayer/info`). All SDK calls that require the MPC round-trip revert on devnet.
-
-To keep the complete UX demonstrable, we built a clean **Demo Mode** — a simulation layer with realistic async delays, per-step state transitions, and localStorage-backed persistence so the employer→employee balance handoff works across wallet switches in a single browser session.
-
-The SDK integration code in `src/lib/umbra.ts` is identical in both paths. Switching to live execution is a single flag:
+### Demo Mode flag
 
 ```ts
-// src/lib/umbra.ts
-export const DEMO_MODE = true  // ← set to false when devnet MPC pools are active
+// src/lib/cloak.ts
+export const DEMO_MODE = true  // ← flip to false for live devnet transactions
 ```
 
-No other code changes are needed. All function signatures, types, and call sites are identical.
+When `true`, all SDK calls are replaced with localStorage-backed simulation. The function signatures, types, and call sites are identical in both modes.
 
 ---
 
 ## Features
 
 | Page | Role | Description |
-|------|------|-------------|
-| **Landing** | Public | Product overview, privacy explainer, how-it-works walkthrough, wallet connect CTA |
-| **Dashboard** | Employer | Live stats: active headcount, monthly payroll total, number of payroll runs, last payment date |
-| **Manage Employees** | Employer | Add/remove employees — name, Solana wallet address, monthly salary, department (preset list + custom entry) |
-| **Run Payroll** | Employer | One-click batch payroll with real-time per-employee progress: spinner on active, checkmark on complete, progress bar |
-| **My Balance** | Employee | Scan stealth addresses for incoming salary UTXOs, view encrypted balance, withdraw to public wallet |
-| **Compliance Report** | Employer | Generate auditable reports by pay period; export PDF via browser print; copy or view full viewing key with inline explainer |
+|---|---|---|
+| **Landing** | Public | Product overview, privacy model explainer, how-it-works walkthrough |
+| **Dashboard** | Employer | Live stats — headcount, monthly payroll total, run history, last payment date |
+| **Employees** | Employer | Add / remove team members with wallet address, salary, and department |
+| **Run Payroll** | Employer | One-click batch disbursement with real-time per-employee progress tracking |
+| **My Balance** | Employee | Scan shielded pool for incoming notes, view claimable balance, withdraw to wallet |
+| **Compliance** | Employer | Generate printable / PDF audit report with viewing-key cryptographic attestation |
+
+---
+
+## Demo Mode
+
+`DEMO_MODE = true` is set in [`src/lib/cloak.ts`](src/lib/cloak.ts). In demo mode:
+
+- All Cloak SDK calls are simulated locally with **realistic delays** that mirror real ZK proof generation (~2 s) and relay round-trips (~1.5 s)
+- Balances persist in `localStorage` across the employer and employee pages — run payroll on the employer view, see the balance appear immediately on the employee portal without switching wallets
+- Transaction signatures are fake-but-valid-format base58 strings, displayed exactly as they would be on mainnet
+- **No real SOL is spent** — no transactions are broadcast to any network
+
+**Switching to live mode:** set `DEMO_MODE = false`. No other code changes are needed.
 
 ---
 
 ## Tech Stack
 
-| Layer              | Technology           | Version |
-|--------------------|----------------------|---------|
-| Frontend framework | React                | 19      |
-| Build tool         | Vite                 | 8       |
-| Language           | TypeScript           | 6       |
-| Privacy protocol   | `@umbra-privacy/sdk` | 4.0.0   |
-| ZK prover (browser WASM) | `@umbra-privacy/web-zk-prover` | 2.0.1 |
-| Blockchain RPC     | `@solana/web3.js`    | 1.98    |
-| Wallet adapter     | `@solana/wallet-adapter-*` | 0.15 |
-| Wallet standard    | `@wallet-standard/core` | 1.1 |
-| Routing            | React Router         | 7      |
-| Icons              | Lucide React         |   —    |
-| Styling            | Inline styles, dynamic dark/light theming | — |
-
----
-
-## How Privacy Works
-
-```
-Employer wallet                 Umbra Mixer Pool              Employee wallet
-      │                                │                               │
-      │  ① ZK proof (encrypt amount)  │                               │
-      ├──── createReceiverClaimableUtxo ──►  UTXO (amount hidden)      │
-      │                                │                               │
-      │                                │  ② Scan Merkle tree          │
-      │                                │◄──────────────────────────────┤
-      │                                │  ③ Decrypt matching UTXOs    │
-      │                                ├──────────────────────────────►│
-      │                                │                               │
-      │                                │  ④ ZK proof: claim UTXO      │
-      │                                │◄──────────────────────────────┤
-      │                                │  ⑤ Withdraw to public ATA    │
-      │                                ├──────────────────────────────►│
-```
-
-**What the blockchain sees:** A deposit into a pool and a withdrawal from a pool. No amounts. No link between depositor and recipient.
-
-**What only the employee sees:** Their balance, decrypted locally using their private key.
-
-**What an auditor sees (with viewing key):** The full verified payment record — but only what the employer explicitly shares.
-
----
-
-## Getting Started
-
-### Prerequisites
-
-- Node.js 18+
-- [Phantom wallet](https://phantom.app) browser extension, switched to **devnet**
-- Devnet SOL for transaction fees:
-  ```bash
-  solana airdrop 2 <your-address> --url devnet
-  ```
-
-### Install & Run
-
-```bash
-# Clone the repo
-git clone <repo-url>
-cd private-payroll
-
-# Install dependencies
-npm install
-
-# Start the dev server
-npm run dev
-```
-
-The app runs at `http://localhost:5173`.
-
-### Build for Production
-
-```bash
-npm run build      # Type-check + bundle → dist/
-npm run preview    # Serve the production build locally
-```
-
-### Lint
-
-```bash
-npm run lint
-```
-
----
-
-## Using the App
-
-### Employer Flow
-
-1. Connect your Phantom wallet (devnet) and navigate to **Dashboard**
-2. Go to **Manage Employees** → add employees with their Solana wallet address, monthly salary in USDC, and department
-3. Go to **Run Payroll** → review the payment breakdown and click **Send Private Payroll**
-   - On first run the app registers your wallet with Umbra (approve the Phantom signing prompt)
-   - A ZK proof is generated per employee; the progress screen shows each one completing in real time
-4. Go to **Compliance Report** → select a pay period, click **Generate Report**, then export PDF or copy the viewing key
-
-### Employee Flow
-
-1. Connect your Phantom wallet (devnet) — this must be the address the employer registered
-2. Navigate to **My Balance**
-   - On first visit the app registers your wallet with Umbra (approve the signing prompt — one time only)
-   - The app scans the Umbra Merkle tree for UTXOs sent to your key
-3. Click **Withdraw to Wallet** to claim your salary
-   - Two ZK proofs are generated client-side: claim into encrypted balance, then withdraw to your token account
-
-### Demo Mode Walkthrough
-
-With `DEMO_MODE = true` (default), no real transactions are submitted. localStorage is used to pass the balance from the employer session to the employee session:
-
-1. Connect **Employer wallet** → Run Payroll → complete the flow (writes demo balance to localStorage keyed by each employee's address)
-2. Switch to **Employee wallet** (any address you added as an employee) → My Balance shows the deposited salary
-3. Click **Withdraw** → balance clears to $0 and a simulated transaction signature is shown
+| Layer | Technology | Version |
+|---|---|---|
+| Privacy protocol | [`@cloak.dev/sdk`](https://docs.cloak.ag) — Groth16 ZK proofs, UTXO shielded pool | 0.1.4 |
+| Blockchain | Solana (devnet) | — |
+| RPC | `@solana/web3.js` | 1.98 |
+| Wallet | Phantom via `@solana/wallet-adapter` (Wallet Standard) | 0.15 |
+| Frontend | React 19 + Vite 8 + TypeScript 6 | — |
+| Routing | React Router | 7 |
+| Node polyfills | `vite-plugin-node-polyfills` — Buffer, crypto, stream for browser ZK | — |
+| Icons | Lucide React | — |
+| Styling | Inline styles with dark/light theme context | — |
+| Package manager | pnpm | — |
 
 ---
 
@@ -256,46 +155,88 @@ With `DEMO_MODE = true` (default), no real transactions are submitted. localStor
 ```
 src/
 ├── lib/
-│   └── umbra.ts            # All Umbra SDK calls + DEMO_MODE flag
-├── context/
-│   ├── PayrollContext.tsx   # Employee list and payroll run history
-│   └── ThemeContext.tsx     # Dark / light mode
+│   └── cloak.ts              # All Cloak SDK integration — DEMO_MODE flag lives here
 ├── pages/
-│   ├── Landing.tsx
-│   ├── Dashboard.tsx
-│   ├── AddEmployees.tsx
-│   ├── RunPayroll.tsx
-│   ├── EmployeeView.tsx
-│   └── ComplianceReport.tsx
+│   ├── Landing.tsx            # Marketing / entry page
+│   ├── Dashboard.tsx          # Employer overview
+│   ├── AddEmployees.tsx       # Employee roster management
+│   ├── RunPayroll.tsx         # Batch disbursement flow with per-step progress
+│   ├── EmployeeView.tsx       # Employee portal — scan notes + withdraw
+│   └── ComplianceReport.tsx   # PDF-ready audit report with viewing key
+├── context/
+│   ├── PayrollContext.tsx     # Employee list and payroll run history (with mock data)
+│   └── ThemeContext.tsx       # Dark / light mode toggle
 └── components/
-    └── Layout.tsx           # Top nav, responsive shell, theme toggle
+    └── Layout.tsx             # Sticky nav, responsive shell, theme toggle, footer
+public/
+└── cloak-logo.png             # Official Cloak cat-mask wordmark icon
 ```
 
-All Umbra SDK calls are isolated in `src/lib/umbra.ts` behind clean async helper functions (`initUmbraClient`, `sendPrivatePayroll`, `scanForPayroll`, `claimAndWithdraw`, etc.). The rest of the app never imports from `@umbra-privacy/sdk` directly, making the demo→production transition a one-line change.
+All Cloak SDK calls are isolated in `src/lib/cloak.ts` behind clean async helpers (`initCloakClient`, `sendPrivatePayroll`, `scanForPayroll`, `claimAndWithdraw`). No other file imports from `@cloak.dev/sdk` directly.
 
 ---
 
-## Deployed Links
+## Setup
 
-| Resource | Value |
-|----------|-------|
-| Umbra Program ID (devnet) | `DSuKkyqGVGgo4QtPABfxKJKygUDACbUhirnuv63mEpAJ` |
-| PRVT test token mint | `PRVT6TB7uss3FrUd2D9xs2zqDBsa3GbMJMwCQsgmeta` |
-| Umbra Relayer API | `https://relayer.api.umbraprivacy.com` |
-| Umbra UTXO Indexer | `https://utxo-indexer.api.umbraprivacy.com` |
-| Live frontend | https://private-payroll-silk.vercel.app |
+**Prerequisites:** Node.js 18+, pnpm, [Phantom](https://phantom.app) wallet extension set to **devnet**
+
+```bash
+# Clone and install
+git clone <repo-url>
+cd cloak-payroll
+pnpm install
+
+# Start dev server
+pnpm dev
+# → http://localhost:5173
+
+# Production build
+pnpm build
+```
+
+> The app runs in `DEMO_MODE = true` by default — no devnet SOL needed. To test live transactions, set `DEMO_MODE = false` in `src/lib/cloak.ts` and fund your wallet with devnet SOL (`solana airdrop 2 <address> --url devnet`).
+
+---
+
+## Walkthrough
+
+### Employer flow
+
+1. Connect Phantom (devnet) → **Dashboard**
+2. **Employees** → add team members with wallet addresses and salaries
+3. **Run Payroll** → review the breakdown → click **Send Private Payroll**
+   - In demo mode: each employee's progress animates in real time, fake signatures appear on completion
+   - In live mode: ZK proofs are generated in-browser (~3–4 s each), relay submits to devnet
+4. **Compliance** → generate a PDF audit report, copy the viewing key for your accountant
+
+### Employee flow
+
+1. Connect Phantom → **My Balance**
+2. The portal scans (`loadNotes()`) the shielded pool for notes sent to your wallet
+3. Click **Withdraw to Wallet** → funds arrive in your standard Solana wallet
+
+### Demo cross-wallet handoff
+
+With two browser tabs open:
+- Tab 1: connect Employer wallet → **Run Payroll** → complete the flow
+- Tab 2: connect the same wallet address you added as an employee → **My Balance** → the salary appears instantly (localStorage-backed)
 
 ---
 
 ## Screenshots
 
-> _Add screenshots here_
+*(Screenshots to be added after final UI polish)*
 
-| Landing | Dashboard | Employees | Run Payroll | My Balance | Compliance |
-|---------|-----------|-----------|-------------|------------|------------|
-| ![landing](screenshots/landing.png) | ![dashboard](screenshots/dashboard.png) | ![employee](screenshots/employee.png) | ![payroll](screenshots/payroll.png) | ![balance](screenshots/balance.png) | ![compliance](screenshots/compliance.png) |
+| Landing | Dashboard | Run Payroll | Employee Portal | Compliance |
+|---|---|---|---|---|
+| — | — | — | — | — |
+
 ---
 
 ## License
 
 MIT
+
+---
+
+*CloakPayroll — Superteam Frontier Hackathon 2025, Cloak Track*
