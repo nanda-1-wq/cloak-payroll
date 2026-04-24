@@ -245,4 +245,4 @@ MIT
 
 ---
 
-*CloakPayroll — Superteam Frontier Hackathon 2025, Cloak Track*
+*CloakPayroll Superteam Frontier Hackathon 2026, Cloak Track*
