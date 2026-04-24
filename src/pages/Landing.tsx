@@ -129,7 +129,7 @@ export default function Landing() {
           }}>
             <Zap size={13} color="#F97316" />
             <span style={{ fontSize: 13, color: '#F97316', fontWeight: 500 }}>
-              Built for the Superteam Frontier Hackathon — Cloak Track
+              Built for the Superteam Frontier Hackathon - Cloak Track
             </span>
           </div>
 
@@ -343,7 +343,7 @@ export default function Landing() {
         display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
       }}>
         <Globe size={13} />
-        <span>CloakPayroll - Powered by Cloak SDK on Solana Devnet - Cloak Frontier 2025</span>
+        <span>CloakPayroll - Powered by Cloak SDK on Solana Devnet - Cloak Frontier 2026</span>
       </footer>
     </div>
   )
