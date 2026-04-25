@@ -2,7 +2,7 @@
 
 **Confidential on-chain payroll powered by Cloak SDK on Solana**
 
-> Built for **Superteam Frontier Hackathon — Cloak Track**
+> Built for **Superteam Frontier Hackathon - Cloak Track**
 
 ---
 
@@ -21,10 +21,10 @@
 
 Every salary payment on Solana is permanently public:
 
-- **Amounts are visible** — anyone with a block explorer can read exactly what every employee earns
-- **Identities are exposed** — employer and employee wallet addresses are permanently linked on-chain
-- **Payment schedules reveal strategy** — pay frequency and amounts expose headcount, burn rate, and company runway to competitors
-- **No confidential on-chain payroll exists** — businesses that want the programmability and auditability of blockchain payments must accept full transparency or stay off-chain entirely
+- **Amounts are visible** - anyone with a block explorer can read exactly what every employee earns
+- **Identities are exposed** - employer and employee wallet addresses are permanently linked on-chain
+- **Payment schedules reveal strategy** - pay frequency and amounts expose headcount, burn rate, and company runway to competitors
+- **No confidential on-chain payroll exists** - businesses that want the programmability and auditability of blockchain payments must accept full transparency or stay off-chain entirely
 
 ---
 
@@ -32,11 +32,11 @@ Every salary payment on Solana is permanently public:
 
 CloakPayroll wraps the **Cloak SDK** to make on-chain payroll fully private:
 
-- Salary amounts are hidden inside a **Groth16 ZK-proof shielded pool** — no on-chain observer can read the value
-- Payments are routed to employees as **shielded UTXO notes** — the link between employer and employee wallets never appears on-chain
+- Salary amounts are hidden inside a **Groth16 ZK-proof shielded pool** - no on-chain observer can read the value
+- Payments are routed to employees as **shielded UTXO notes** - the link between employer and employee wallets never appears on-chain
 - One click triggers a **batch disbursement** that settles all salaries in a single shielded transaction
 - Employees can share a **viewing key** with auditors or accountants to prove payment without revealing anything publicly
-- The entire flow — deposit, proof generation, relay, withdrawal — runs in the browser with **no server custody** of funds
+- The entire flow - deposit, proof generation, relay, withdrawal - runs in the browser with **no server custody** of funds
 
 ---
 
@@ -59,24 +59,24 @@ const sdk = new CloakSDK({
 })
 ```
 
-### Batch payroll disbursement — `deposit()` + `privateTransfer()`
+### Batch payroll disbursement - `deposit()` + `privateTransfer()`
 
 Each employee payment deposits into the shielded pool to generate a note, then `privateTransfer()` routes that note to the recipient. Cloak handles ZK proof generation and relay submission internally:
 
 ```ts
-// Deposit to enter the shielded pool — returns a CloakNote
+// Deposit to enter the shielded pool - returns a CloakNote
 const depositResult = await sdk.deposit(connection, amountLamports)
 
 // privateTransfer: generates Groth16 proof + submits via relay
 const result = await sdk.privateTransfer(connection, depositResult.note, [
   { recipient: new PublicKey(employeeWalletAddress), amount: amountLamports },
 ])
-// result.signature — tx confirmed, amount invisible on-chain
+// result.signature - tx confirmed, amount invisible on-chain
 ```
 
 Up to 5 recipients can be batched into a single `privateTransfer()` call.
 
-### Employee balance scanning — `loadNotes()`
+### Employee balance scanning - `loadNotes()`
 
 ```ts
 // Loads all commitment notes owned by this wallet's Cloak keys
@@ -84,17 +84,17 @@ const notes = await sdk.loadNotes()
 const totalClaimable = notes.reduce((sum, n) => sum + BigInt(n.amount), 0n)
 ```
 
-### Salary withdrawal — `withdraw()`
+### Salary withdrawal - `withdraw()`
 
 ```ts
 // Withdraws a note to the employee's public wallet
 const result = await sdk.withdraw(connection, note, sdk.getPublicKey())
-// result.signature — funds land in the employee's standard wallet
+// result.signature - funds land in the employee's standard wallet
 ```
 
 ### Compliance viewing keys
 
-A viewing key is derived per employer and embedded in every compliance report. Sharing the key with an auditor lets them verify payment amounts and dates on-chain without exposing any public data — matching Cloak's selective-disclosure model.
+A viewing key is derived per employer and embedded in every compliance report. Sharing the key with an auditor lets them verify payment amounts and dates on-chain without exposing any public data - matching Cloak's selective-disclosure model.
 
 ### Demo Mode flag
 
@@ -112,7 +112,7 @@ When `true`, all SDK calls are replaced with localStorage-backed simulation. The
 | Page | Role | Description |
 |---|---|---|
 | **Landing** | Public | Product overview, privacy model explainer, how-it-works walkthrough |
-| **Dashboard** | Employer | Live stats — headcount, monthly payroll total, run history, last payment date |
+| **Dashboard** | Employer | Live stats - headcount, monthly payroll total, run history, last payment date |
 | **Employees** | Employer | Add / remove team members with wallet address, salary, and department |
 | **Run Payroll** | Employer | One-click batch disbursement with real-time per-employee progress tracking |
 | **My Balance** | Employee | Scan shielded pool for incoming notes, view claimable balance, withdraw to wallet |
@@ -125,9 +125,9 @@ When `true`, all SDK calls are replaced with localStorage-backed simulation. The
 `DEMO_MODE = true` is set in [`src/lib/cloak.ts`](src/lib/cloak.ts). In demo mode:
 
 - All Cloak SDK calls are simulated locally with **realistic delays** that mirror real ZK proof generation (~2 s) and relay round-trips (~1.5 s)
-- Balances persist in `localStorage` across the employer and employee pages — run payroll on the employer view, see the balance appear immediately on the employee portal without switching wallets
+- Balances persist in `localStorage` across the employer and employee pages - run payroll on the employer view, see the balance appear immediately on the employee portal without switching wallets
 - Transaction signatures are fake-but-valid-format base58 strings, displayed exactly as they would be on mainnet
-- **No real SOL is spent** — no transactions are broadcast to any network
+- **No real SOL is spent** - no transactions are broadcast to any network
 
 **Switching to live mode:** set `DEMO_MODE = false`. No other code changes are needed.
 
@@ -137,16 +137,16 @@ When `true`, all SDK calls are replaced with localStorage-backed simulation. The
 
 | Layer | Technology | Version |
 |---|---|---|
-| Privacy protocol | [`@cloak.dev/sdk`](https://docs.cloak.ag) — Groth16 ZK proofs, UTXO shielded pool | 0.1.4 |
-| Blockchain | Solana (devnet) | — |
+| Privacy protocol | [`@cloak.dev/sdk`](https://docs.cloak.ag) - Groth16 ZK proofs, UTXO shielded pool | 0.1.4 |
+| Blockchain | Solana (devnet) | - |
 | RPC | `@solana/web3.js` | 1.98 |
 | Wallet | Phantom via `@solana/wallet-adapter` (Wallet Standard) | 0.15 |
-| Frontend | React 19 + Vite 8 + TypeScript 6 | — |
+| Frontend | React 19 + Vite 8 + TypeScript 6 | - |
 | Routing | React Router | 7 |
-| Node polyfills | `vite-plugin-node-polyfills` — Buffer, crypto, stream for browser ZK | — |
-| Icons | Lucide React | — |
-| Styling | Inline styles with dark/light theme context | — |
-| Package manager | pnpm | — |
+| Node polyfills | `vite-plugin-node-polyfills` - Buffer, crypto, stream for browser ZK | - |
+| Icons | Lucide React | - |
+| Styling | Inline styles with dark/light theme context | - |
+| Package manager | pnpm | - |
 
 ---
 
@@ -155,13 +155,13 @@ When `true`, all SDK calls are replaced with localStorage-backed simulation. The
 ```
 src/
 ├── lib/
-│   └── cloak.ts              # All Cloak SDK integration — DEMO_MODE flag lives here
+│   └── cloak.ts              # All Cloak SDK integration - DEMO_MODE flag lives here
 ├── pages/
 │   ├── Landing.tsx            # Marketing / entry page
 │   ├── Dashboard.tsx          # Employer overview
 │   ├── AddEmployees.tsx       # Employee roster management
 │   ├── RunPayroll.tsx         # Batch disbursement flow with per-step progress
-│   ├── EmployeeView.tsx       # Employee portal — scan notes + withdraw
+│   ├── EmployeeView.tsx       # Employee portal - scan notes + withdraw
 │   └── ComplianceReport.tsx   # PDF-ready audit report with viewing key
 ├── context/
 │   ├── PayrollContext.tsx     # Employee list and payroll run history (with mock data)
@@ -194,7 +194,7 @@ pnpm dev
 pnpm build
 ```
 
-> The app runs in `DEMO_MODE = true` by default — no devnet SOL needed. To test live transactions, set `DEMO_MODE = false` in `src/lib/cloak.ts` and fund your wallet with devnet SOL (`solana airdrop 2 <address> --url devnet`).
+> The app runs in `DEMO_MODE = true` by default - no devnet SOL needed. To test live transactions, set `DEMO_MODE = false` in `src/lib/cloak.ts` and fund your wallet with devnet SOL (`solana airdrop 2 <address> --url devnet`).
 
 ---
 
