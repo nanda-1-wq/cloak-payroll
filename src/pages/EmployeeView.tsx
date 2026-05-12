@@ -6,6 +6,7 @@ import {
   Shield, ExternalLink, RefreshCw, Clock, DollarSign, UserPlus,
 } from 'lucide-react'
 import { useTheme, themeColors } from '../context/ThemeContext'
+import { useWindowSize } from '../hooks/useWindowSize'
 import {
   initCloakClient,
   isRegistered,
@@ -25,6 +26,8 @@ export default function EmployeeView() {
   const { connected, publicKey, wallet } = useWallet()
   const { isDark } = useTheme()
   const c = themeColors(isDark)
+  const { width } = useWindowSize()
+  const isMobile = width < 768
 
   const [client, setClient] = useState<CloakClient | null>(null)
   const [loadState, setLoadState] = useState<LoadState>('idle')
@@ -98,7 +101,7 @@ export default function EmployeeView() {
   // Not connected
   if (!connected) {
     return (
-      <div style={{ maxWidth: 600, margin: '0 auto', textAlign: 'center', padding: '80px 24px' }}>
+      <div style={{ maxWidth: 600, margin: '0 auto', textAlign: 'center', padding: isMobile ? '48px 16px' : '80px 24px' }}>
         <div style={{
           width: 80, height: 80,
           background: 'linear-gradient(135deg, rgba(234,88,12,0.2), rgba(239,68,68,0.1))',
@@ -277,7 +280,7 @@ export default function EmployeeView() {
           ? 'linear-gradient(135deg, rgba(234,88,12,0.3), rgba(239,68,68,0.15))'
           : 'linear-gradient(135deg, #7C2D12, #7F1D1D)',
         border: '1px solid rgba(249,115,22,0.4)',
-        borderRadius: 20, padding: '40px 32px', textAlign: 'center',
+        borderRadius: 20, padding: isMobile ? '28px 16px' : '40px 32px', textAlign: 'center',
         marginBottom: 24, position: 'relative', overflow: 'hidden',
       }}>
         <div style={{
@@ -292,7 +295,7 @@ export default function EmployeeView() {
             ENCRYPTED BALANCE
           </div>
 
-          <div style={{ fontSize: 56, fontWeight: 900, letterSpacing: '-2px', marginBottom: 4 }}>
+          <div style={{ fontSize: isMobile ? 40 : 56, fontWeight: 900, letterSpacing: '-2px', marginBottom: 4 }}>
             {isWithdrawn ? (
               <span style={{ color: 'rgba(255,255,255,0.4)' }}>$0.00</span>
             ) : (
@@ -321,6 +324,8 @@ export default function EmployeeView() {
                 fontSize: 16, fontWeight: 700, fontFamily: 'inherit',
                 display: 'flex', alignItems: 'center', gap: 10,
                 margin: '0 auto',
+                width: isMobile ? '100%' : 'auto',
+                justifyContent: 'center',
                 boxShadow: hasBalance ? '0 0 40px rgba(249,115,22,0.35)' : 'none',
               }}
             >
@@ -390,7 +395,7 @@ export default function EmployeeView() {
       </div>
 
       {/* Stats row */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12, marginBottom: 24 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr 1fr', gap: 10, marginBottom: 24 }}>
         {[
           { icon: DollarSign, label: 'Available Balance', value: isWithdrawn ? '$0.00' : balanceDisplay, color: '#F97316' },
           { icon: CheckCircle, label: 'Claimable UTXOs', value: String(isWithdrawn ? 0 : (scanResult?.received.length ?? 0)), color: '#FB923C' },

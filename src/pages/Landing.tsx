@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { Shield, Lock, Eye, FileCheck, ChevronRight, Zap, Globe, CheckCircle, Sun, Moon } from 'lucide-react'
 import { useTheme, themeColors } from '../context/ThemeContext'
+import { useWindowSize } from '../hooks/useWindowSize'
 
 const FEATURES = [
   {
@@ -38,6 +39,8 @@ const STEPS = [
 export default function Landing() {
   const { isDark, toggle } = useTheme()
   const c = themeColors(isDark)
+  const { width } = useWindowSize()
+  const isMobile = width < 768
 
   return (
     <div style={{ backgroundColor: c.pageBg, minHeight: '100vh', color: c.body }}>
@@ -49,31 +52,33 @@ export default function Landing() {
         backdropFilter: 'blur(12px)',
         boxShadow: isDark ? 'none' : '0 1px 4px rgba(0,0,0,0.06)',
       }}>
-        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 24px', display: 'flex', alignItems: 'center', height: 64 }}>
+        <div style={{ maxWidth: 1200, margin: '0 auto', padding: isMobile ? '0 12px' : '0 24px', display: 'flex', alignItems: 'center', height: 56 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 0 }}>
-              <span style={{ fontWeight: 800, fontSize: 19, letterSpacing: '-0.5px', color: c.logoText }}>CL</span>
+              <span style={{ fontWeight: 800, fontSize: isMobile ? 16 : 19, letterSpacing: '-0.5px', color: c.logoText }}>CL</span>
               <img
                 src="/cloak-logo.png"
                 alt=""
-                style={{ height: 22, width: 22, objectFit: 'cover', borderRadius: 3, margin: '0 1px' }}
+                style={{ height: 20, width: 20, objectFit: 'cover', borderRadius: 3, margin: '0 1px' }}
               />
-              <span style={{ fontWeight: 800, fontSize: 19, letterSpacing: '-0.5px', color: c.logoText }}>AK</span>
+              <span style={{ fontWeight: 800, fontSize: isMobile ? 16 : 19, letterSpacing: '-0.5px', color: c.logoText }}>AK</span>
             </div>
-            <span style={{ fontWeight: 800, fontSize: 19, letterSpacing: '-0.5px', color: '#F97316' }}>
+            <span style={{ fontWeight: 800, fontSize: isMobile ? 16 : 19, letterSpacing: '-0.5px', color: '#F97316' }}>
               Payroll
             </span>
           </div>
 
-          <div style={{ marginLeft: 'auto', display: 'flex', gap: 10, alignItems: 'center' }}>
-            <span style={{
-              fontSize: 11, fontWeight: 700, letterSpacing: '1px',
-              color: '#f59e0b', backgroundColor: 'rgba(245, 158, 11, 0.1)',
-              border: '1px solid rgba(245, 158, 11, 0.25)',
-              padding: '3px 9px', borderRadius: 6,
-            }}>
-              DEVNET
-            </span>
+          <div style={{ marginLeft: 'auto', display: 'flex', gap: isMobile ? 6 : 10, alignItems: 'center' }}>
+            {!isMobile && (
+              <span style={{
+                fontSize: 11, fontWeight: 700, letterSpacing: '1px',
+                color: '#f59e0b', backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                border: '1px solid rgba(245, 158, 11, 0.25)',
+                padding: '3px 9px', borderRadius: 6,
+              }}>
+                DEVNET
+              </span>
+            )}
 
             {/* Theme toggle */}
             <button
@@ -83,13 +88,13 @@ export default function Landing() {
                 background: 'none',
                 border: `1px solid ${c.border}`,
                 borderRadius: 8,
-                width: 34, height: 34,
+                width: 32, height: 32,
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 cursor: 'pointer',
                 color: c.muted,
               }}
             >
-              {isDark ? <Sun size={16} /> : <Moon size={16} />}
+              {isDark ? <Sun size={15} /> : <Moon size={15} />}
             </button>
 
             <Link
@@ -97,19 +102,20 @@ export default function Landing() {
               style={{
                 background: 'linear-gradient(135deg, #F97316, #EF4444)',
                 color: 'white', textDecoration: 'none',
-                padding: '8px 20px', borderRadius: 10,
-                fontSize: 14, fontWeight: 600,
-                display: 'flex', alignItems: 'center', gap: 6,
+                padding: isMobile ? '7px 12px' : '8px 20px', borderRadius: 10,
+                fontSize: isMobile ? 13 : 14, fontWeight: 600,
+                display: 'flex', alignItems: 'center', gap: 4,
+                whiteSpace: 'nowrap',
               }}
             >
-              Launch App <ChevronRight size={15} />
+              {isMobile ? 'Launch' : 'Launch App'} <ChevronRight size={14} />
             </Link>
           </div>
         </div>
       </header>
 
       {/* Hero */}
-      <section style={{ maxWidth: 1200, margin: '0 auto', padding: '100px 24px 80px', textAlign: 'center' }}>
+      <section style={{ maxWidth: 1200, margin: '0 auto', padding: isMobile ? '60px 16px 48px' : '100px 24px 80px', textAlign: 'center' }}>
         <div style={{
           position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)',
           width: 800, height: 500,
@@ -147,20 +153,21 @@ export default function Landing() {
             </span>
           </h1>
 
-          <p style={{ fontSize: 20, color: c.muted, maxWidth: 580, margin: '0 auto 48px', lineHeight: 1.6 }}>
+          <p style={{ fontSize: isMobile ? 16 : 20, color: c.muted, maxWidth: 580, margin: '0 auto 36px', lineHeight: 1.6, padding: isMobile ? '0 8px' : 0 }}>
             Confidential salary payments on Solana using Cloak's shielded pool protocol. Zero knowledge proofs. Full compliance.
           </p>
 
-          <div style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', gap: 12, justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap' }}>
             <Link
               to="/dashboard"
               style={{
                 background: 'linear-gradient(135deg, #F97316, #EF4444)',
                 color: 'white', textDecoration: 'none',
-                padding: '14px 32px', borderRadius: 12,
-                fontSize: 16, fontWeight: 700,
+                padding: isMobile ? '13px 24px' : '14px 32px', borderRadius: 12,
+                fontSize: isMobile ? 15 : 16, fontWeight: 700,
                 display: 'flex', alignItems: 'center', gap: 8,
                 boxShadow: '0 0 40px rgba(249, 115, 22, 0.35)',
+                width: isMobile ? '100%' : 'auto', justifyContent: 'center',
               }}
             >
               Start as Employer <ChevronRight size={18} />
@@ -171,9 +178,10 @@ export default function Landing() {
                 backgroundColor: c.cardBg,
                 border: `1px solid ${c.border}`,
                 color: c.body, textDecoration: 'none',
-                padding: '14px 32px', borderRadius: 12,
-                fontSize: 16, fontWeight: 600,
+                padding: isMobile ? '13px 24px' : '14px 32px', borderRadius: 12,
+                fontSize: isMobile ? 15 : 16, fontWeight: 600,
                 display: 'flex', alignItems: 'center', gap: 8,
+                width: isMobile ? '100%' : 'auto', justifyContent: 'center',
               }}
             >
               Check My Balance <Eye size={18} />
@@ -303,11 +311,11 @@ export default function Landing() {
       </section>
 
       {/* CTA */}
-      <section style={{ maxWidth: 1200, margin: '0 auto', padding: '0 24px 100px' }}>
+      <section style={{ maxWidth: 1200, margin: '0 auto', padding: isMobile ? '0 16px 60px' : '0 24px 100px' }}>
         <div style={{
           background: 'linear-gradient(135deg, rgba(249, 115, 22, 0.1), rgba(239, 68, 68, 0.07))',
           border: '1px solid rgba(249, 115, 22, 0.3)',
-          borderRadius: 24, padding: '60px 40px', textAlign: 'center',
+          borderRadius: 24, padding: isMobile ? '40px 20px' : '60px 40px', textAlign: 'center',
         }}>
           <div style={{ display: 'flex', justifyContent: 'center', gap: 6, marginBottom: 24 }}>
             {[0,1,2].map(i => <CheckCircle key={i} size={16} color="#F97316" />)}

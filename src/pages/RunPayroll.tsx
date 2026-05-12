@@ -3,6 +3,7 @@ import { useWallet } from '@solana/wallet-adapter-react'
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui'
 import { usePayroll } from '../context/PayrollContext'
 import { useTheme, themeColors } from '../context/ThemeContext'
+import { useWindowSize } from '../hooks/useWindowSize'
 import { Link } from 'react-router-dom'
 import {
   Play, Lock, Shield, CheckCircle, AlertCircle, ExternalLink,
@@ -24,6 +25,8 @@ export default function RunPayroll() {
   const { employees, addPayrollRun } = usePayroll()
   const { isDark } = useTheme()
   const c = themeColors(isDark)
+  const { width } = useWindowSize()
+  const isMobile = width < 768
 
   const [step, setStep] = useState<Step>('review')
   const [txSigs, setTxSigs] = useState<string[]>([])
@@ -117,7 +120,7 @@ export default function RunPayroll() {
   }
 
   return (
-    <div style={{ maxWidth: 720, margin: '0 auto' }}>
+    <div style={{ maxWidth: 720, margin: '0 auto', width: '100%' }}>
       <div style={{ marginBottom: 32 }}>
         <h1 style={{ fontSize: 28, fontWeight: 800, letterSpacing: '-0.5px', marginBottom: 6, color: c.heading }}>Run Payroll</h1>
         <p style={{ color: c.muted, fontSize: 14 }}>
@@ -161,7 +164,7 @@ export default function RunPayroll() {
           {/* Summary card */}
           <div style={{ backgroundColor: c.cardBg, border: `1px solid ${c.border}`, borderRadius: 16, padding: 24, marginBottom: 20 }}>
             <h3 style={{ fontSize: 15, fontWeight: 700, marginBottom: 16, color: c.muted }}>Payroll Summary</h3>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16, marginBottom: 20 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr 1fr', gap: isMobile ? 10 : 16, marginBottom: 20 }}>
               {[
                 { icon: Users, label: 'Employees', value: employees.length.toString(), color: '#F97316' },
                 { icon: DollarSign, label: 'Total Amount', value: `$${totalPayroll.toLocaleString()}`, color: '#EF4444' },

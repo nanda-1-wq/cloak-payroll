@@ -3,6 +3,7 @@ import { useWallet } from '@solana/wallet-adapter-react'
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui'
 import { usePayroll } from '../context/PayrollContext'
 import { useTheme, themeColors } from '../context/ThemeContext'
+import { useWindowSize } from '../hooks/useWindowSize'
 import { UserPlus, Trash2, Shield, CheckCircle, Copy, AlertCircle, X } from 'lucide-react'
 
 const DEPARTMENTS = ['Engineering', 'Design', 'Marketing', 'Operations', 'Finance', 'Sales', 'HR', 'Legal']
@@ -12,6 +13,8 @@ export default function AddEmployees() {
   const { employees, addEmployee, removeEmployee } = usePayroll()
   const { isDark } = useTheme()
   const c = themeColors(isDark)
+  const { width } = useWindowSize()
+  const isMobile = width < 768
 
   const inputStyle = {
     width: '100%',
@@ -91,7 +94,7 @@ export default function AddEmployees() {
         <p style={{ color: c.muted, fontSize: 14 }}>Add employee wallet addresses and salary amounts. All data is encrypted on-chain.</p>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '400px 1fr', gap: 24, alignItems: 'start' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '400px 1fr', gap: 24, alignItems: 'start' }}>
         {/* Add form */}
         <div style={{ backgroundColor: c.cardBg, border: `1px solid ${c.border}`, borderRadius: 16, padding: 28 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 24 }}>

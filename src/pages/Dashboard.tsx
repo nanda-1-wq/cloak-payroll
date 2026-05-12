@@ -3,6 +3,7 @@ import { useWallet } from '@solana/wallet-adapter-react'
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui'
 import { usePayroll } from '../context/PayrollContext'
 import { useTheme, themeColors } from '../context/ThemeContext'
+import { useWindowSize } from '../hooks/useWindowSize'
 import {
   Users, DollarSign, Play, Clock, TrendingUp, ChevronRight,
   CheckCircle, AlertCircle, ExternalLink, Shield
@@ -45,6 +46,8 @@ export default function Dashboard() {
   const { employees, payrollHistory } = usePayroll()
   const { isDark } = useTheme()
   const c = themeColors(isDark)
+  const { width } = useWindowSize()
+  const isMobile = width < 768
 
   const totalPayroll = employees.reduce((s, e) => s + e.salary, 0)
   const lastRun = payrollHistory[0]
@@ -105,7 +108,7 @@ export default function Dashboard() {
       </div>
 
       {/* Stats grid */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 16, marginBottom: 32 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr 1fr' : 'repeat(auto-fit, minmax(220px, 1fr))', gap: isMobile ? 10 : 16, marginBottom: 24 }}>
         <StatCard c={c} icon={Users} label="Total Employees" value={employees.length.toString()} sub="Active on payroll" color="#F97316" />
         <StatCard c={c} icon={DollarSign} label="Monthly Payroll" value={`$${totalPayroll.toLocaleString()}`} sub="USDC per month" color="#EF4444" />
         <StatCard c={c} icon={TrendingUp} label="Payroll Runs" value={payrollHistory.length.toString()} sub="All completed" color="#F97316" />
@@ -119,7 +122,7 @@ export default function Dashboard() {
         />
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: 20 }}>
         {/* Recent payroll history */}
         <div style={{ backgroundColor: c.cardBg, border: `1px solid ${c.border}`, borderRadius: 16, padding: 24 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>

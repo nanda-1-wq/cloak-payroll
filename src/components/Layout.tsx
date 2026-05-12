@@ -6,6 +6,7 @@ import {
   Menu, X, Sun, Moon,
 } from 'lucide-react'
 import { useTheme, themeColors } from '../context/ThemeContext'
+import { useWindowSize } from '../hooks/useWindowSize'
 
 const NAV_ITEMS = [
   { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
@@ -20,6 +21,8 @@ export default function Layout({ children }: { children: ReactNode }) {
   const [mobileOpen, setMobileOpen] = useState(false)
   const { isDark, toggle } = useTheme()
   const c = themeColors(isDark)
+  const { width } = useWindowSize()
+  const isMobile = width < 768
 
   const isActive = (to: string) => location.pathname === to
 
@@ -34,9 +37,9 @@ export default function Layout({ children }: { children: ReactNode }) {
         zIndex: 50,
         boxShadow: isDark ? 'none' : '0 1px 4px rgba(0,0,0,0.06)',
       }}>
-        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 24px', display: 'flex', alignItems: 'center', height: 64 }}>
+        <div style={{ maxWidth: 1280, margin: '0 auto', padding: isMobile ? '0 12px' : '0 24px', display: 'flex', alignItems: 'center', height: 56 }}>
           {/* Logo */}
-          <Link to="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 8, marginRight: 48 }}>
+          <Link to="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 8, marginRight: isMobile ? 'auto' : 48 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 0 }}>
               <span style={{ fontWeight: 800, fontSize: 18, letterSpacing: '-0.5px', color: c.logoText }}>CL</span>
               <img
@@ -52,7 +55,7 @@ export default function Layout({ children }: { children: ReactNode }) {
           </Link>
 
           {/* Desktop nav */}
-          <nav style={{ display: 'flex', gap: 4, flex: 1 }} className="hidden-mobile">
+          <nav style={{ display: isMobile ? 'none' : 'flex', gap: 4, flex: 1 }}>
             {NAV_ITEMS.map(item => (
               <Link
                 key={item.to}
@@ -75,16 +78,18 @@ export default function Layout({ children }: { children: ReactNode }) {
             ))}
           </nav>
 
-          <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 10 }}>
-            {/* Devnet badge */}
-            <span style={{
-              fontSize: 11, fontWeight: 600, letterSpacing: '0.5px',
-              color: '#f59e0b', backgroundColor: 'rgba(245, 158, 11, 0.12)',
-              border: '1px solid rgba(245, 158, 11, 0.3)',
-              padding: '3px 8px', borderRadius: 6,
-            }}>
-              DEVNET
-            </span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: isMobile ? 6 : 10, marginLeft: isMobile ? 8 : 0 }}>
+            {/* Devnet badge — hide on smallest screens */}
+            {!isMobile && (
+              <span style={{
+                fontSize: 11, fontWeight: 600, letterSpacing: '0.5px',
+                color: '#f59e0b', backgroundColor: 'rgba(245, 158, 11, 0.12)',
+                border: '1px solid rgba(245, 158, 11, 0.3)',
+                padding: '3px 8px', borderRadius: 6,
+              }}>
+                DEVNET
+              </span>
+            )}
 
             {/* Theme toggle */}
             <button
@@ -94,7 +99,7 @@ export default function Layout({ children }: { children: ReactNode }) {
                 background: 'none',
                 border: `1px solid ${c.border}`,
                 borderRadius: 8,
-                width: 34, height: 34,
+                width: 32, height: 32,
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 cursor: 'pointer',
                 color: c.muted,
@@ -102,16 +107,15 @@ export default function Layout({ children }: { children: ReactNode }) {
                 transition: 'border-color 0.15s, color 0.15s',
               }}
             >
-              {isDark ? <Sun size={16} /> : <Moon size={16} />}
+              {isDark ? <Sun size={15} /> : <Moon size={15} />}
             </button>
 
-            <WalletMultiButton />
+            {!isMobile && <WalletMultiButton />}
 
             {/* Mobile hamburger */}
             <button
               onClick={() => setMobileOpen(o => !o)}
-              style={{ display: 'none', background: 'none', border: 'none', color: c.muted, cursor: 'pointer', padding: 4 }}
-              className="show-mobile"
+              style={{ display: isMobile ? 'flex' : 'none', background: 'none', border: 'none', color: c.muted, cursor: 'pointer', padding: 4, alignItems: 'center' }}
             >
               {mobileOpen ? <X size={22} /> : <Menu size={22} />}
             </button>
@@ -119,8 +123,8 @@ export default function Layout({ children }: { children: ReactNode }) {
         </div>
 
         {/* Mobile dropdown */}
-        {mobileOpen && (
-          <div style={{ borderTop: `1px solid ${c.navBorder}`, padding: '8px 16px 16px', backgroundColor: c.navBg }}>
+        {mobileOpen && isMobile && (
+          <div style={{ borderTop: `1px solid ${c.navBorder}`, padding: '8px 12px 12px', backgroundColor: c.navBg }}>
             {NAV_ITEMS.map(item => (
               <Link
                 key={item.to}
@@ -140,12 +144,15 @@ export default function Layout({ children }: { children: ReactNode }) {
                 {item.label}
               </Link>
             ))}
+            <div style={{ borderTop: `1px solid ${c.navBorder}`, marginTop: 8, paddingTop: 12 }}>
+              <WalletMultiButton />
+            </div>
           </div>
         )}
       </header>
 
       {/* Main content */}
-      <main style={{ flex: 1, maxWidth: 1280, margin: '0 auto', padding: '40px 24px', width: '100%' }}>
+      <main style={{ flex: 1, maxWidth: 1280, margin: '0 auto', padding: isMobile ? '20px 12px' : '40px 24px', width: '100%' }}>
         {children}
       </main>
 

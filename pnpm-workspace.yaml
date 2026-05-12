@@ -1,0 +1,5 @@
+allowBuilds:
+  bigint-buffer: true
+  blake-hash: true
+  bufferutil: true
+  utf-8-validate: true

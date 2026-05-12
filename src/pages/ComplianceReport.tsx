@@ -3,6 +3,7 @@ import { useWallet } from '@solana/wallet-adapter-react'
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui'
 import { usePayroll } from '../context/PayrollContext'
 import { useTheme, themeColors } from '../context/ThemeContext'
+import { useWindowSize } from '../hooks/useWindowSize'
 import {
   FileText, Shield, Download, Eye, Lock, Key, CheckCircle,
   Loader2, ExternalLink, Building2, Calendar, DollarSign, Users,
@@ -48,6 +49,8 @@ export default function ComplianceReport() {
   const { employees, payrollHistory } = usePayroll()
   const { isDark } = useTheme()
   const c = themeColors(isDark)
+  const { width } = useWindowSize()
+  const isMobile = width < 768
 
   const [reportState, setReportState] = useState<ReportState>('idle')
   const [selectedPeriod, setSelectedPeriod] = useState(PERIODS[0])
@@ -124,7 +127,7 @@ export default function ComplianceReport() {
           color: '#fed7aa', fontSize: 14, fontWeight: 500,
           display: 'flex', alignItems: 'center', gap: 10,
           boxShadow: '0 8px 32px rgba(0,0,0,0.3)',
-          zIndex: 9999, whiteSpace: 'nowrap',
+          zIndex: 9999, maxWidth: 'calc(100vw - 32px)', whiteSpace: 'normal',
         }}>
           <CheckCircle size={16} color="#FB923C" />
           {toastMsg}
@@ -206,7 +209,7 @@ export default function ComplianceReport() {
       <div className="no-print" style={{
         backgroundColor: 'rgba(249,115,22,0.08)',
         border: '1px solid rgba(249,115,22,0.2)',
-        borderRadius: 14, padding: '20px 24px',
+        borderRadius: 14, padding: isMobile ? '16px' : '20px 24px',
         display: 'flex', gap: 16, alignItems: 'flex-start', marginBottom: 28,
       }}>
         <div style={{
@@ -226,7 +229,7 @@ export default function ComplianceReport() {
         </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '340px 1fr', gap: 24, alignItems: 'start' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '340px 1fr', gap: 24, alignItems: 'start' }}>
         {/* Left panel - generate */}
         <div className="no-print" style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
           <div style={{ backgroundColor: c.cardBg, border: `1px solid ${c.border}`, borderRadius: 16, padding: 24 }}>
@@ -428,7 +431,7 @@ export default function ComplianceReport() {
               {/* Org info */}
               <div style={{
                 backgroundColor: c.rowBg, borderRadius: 12, padding: 16, marginBottom: 20,
-                display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12,
+                display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: 12,
                 border: `1px solid ${c.border}`,
               }}>
                 {[
@@ -448,7 +451,7 @@ export default function ComplianceReport() {
               </div>
 
               {/* Summary stats */}
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12, marginBottom: 24 }}>
+              <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)', gap: 12, marginBottom: 24 }}>
                 {[
                   { icon: Users, label: 'Active Employees', value: employees.length.toString(), color: '#F97316' },
                   { icon: DollarSign, label: 'Total Disbursed', value: `$${ytdTotal.toLocaleString()}`, color: '#F97316' },
@@ -478,44 +481,46 @@ export default function ComplianceReport() {
                   </div>
                 </div>
 
-                <div style={{ border: `1px solid ${c.border}`, borderRadius: 12, overflow: 'hidden' }}>
-                  <div style={{
-                    display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr',
-                    padding: '10px 16px',
-                    backgroundColor: c.rowBg,
-                    fontSize: 11, fontWeight: 700, color: c.faint, letterSpacing: '0.5px',
-                  }}>
-                    <span>EMPLOYEE</span>
-                    <span>DEPARTMENT</span>
-                    <span>MONTHLY SALARY</span>
-                    <span>STATUS</span>
-                  </div>
-                  {employees.map((emp, i) => (
-                    <div key={emp.id} style={{
+                <div style={{ overflowX: 'auto', borderRadius: 12, border: `1px solid ${c.border}` }}>
+                  <div style={{ minWidth: 480 }}>
+                    <div style={{
+                      display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr',
+                      padding: '10px 16px',
+                      backgroundColor: c.rowBg,
+                      fontSize: 11, fontWeight: 700, color: c.faint, letterSpacing: '0.5px',
+                    }}>
+                      <span>EMPLOYEE</span>
+                      <span>DEPARTMENT</span>
+                      <span>MONTHLY SALARY</span>
+                      <span>STATUS</span>
+                    </div>
+                    {employees.map((emp, i) => (
+                      <div key={emp.id} style={{
+                        display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr',
+                        padding: '12px 16px',
+                        borderTop: `1px solid ${c.border}`,
+                        backgroundColor: i % 2 === 0 ? 'transparent' : (isDark ? 'rgba(255,255,255,0.01)' : 'rgba(0,0,0,0.01)'),
+                        fontSize: 13,
+                      }}>
+                        <span style={{ fontWeight: 600, color: c.body }}>{emp.name}</span>
+                        <span style={{ color: c.muted }}>{emp.department}</span>
+                        <span style={{ fontWeight: 700, color: '#10b981' }}>${emp.salary.toLocaleString()} USDC</span>
+                        <span style={{ display: 'flex', alignItems: 'center', gap: 4, color: '#10b981', fontSize: 12 }}>
+                          <CheckCircle size={11} /> Verified
+                        </span>
+                      </div>
+                    ))}
+                    <div style={{
                       display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr',
                       padding: '12px 16px',
-                      borderTop: `1px solid ${c.border}`,
-                      backgroundColor: i % 2 === 0 ? 'transparent' : (isDark ? 'rgba(255,255,255,0.01)' : 'rgba(0,0,0,0.01)'),
-                      fontSize: 13,
+                      borderTop: `2px solid ${c.borderBold}`,
+                      fontSize: 13, fontWeight: 700,
                     }}>
-                      <span style={{ fontWeight: 600, color: c.body }}>{emp.name}</span>
-                      <span style={{ color: c.muted }}>{emp.department}</span>
-                      <span style={{ fontWeight: 700, color: '#10b981' }}>${emp.salary.toLocaleString()} USDC</span>
-                      <span style={{ display: 'flex', alignItems: 'center', gap: 4, color: '#10b981', fontSize: 12 }}>
-                        <CheckCircle size={11} /> Verified
-                      </span>
+                      <span style={{ color: c.body }}>Total</span>
+                      <span />
+                      <span style={{ color: c.heading }}>${totalPayroll.toLocaleString()} USDC/mo</span>
+                      <span />
                     </div>
-                  ))}
-                  <div style={{
-                    display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr',
-                    padding: '12px 16px',
-                    borderTop: `2px solid ${c.borderBold}`,
-                    fontSize: 13, fontWeight: 700,
-                  }}>
-                    <span style={{ color: c.body }}>Total</span>
-                    <span />
-                    <span style={{ color: c.heading }}>${totalPayroll.toLocaleString()} USDC/mo</span>
-                    <span />
                   </div>
                 </div>
               </div>
